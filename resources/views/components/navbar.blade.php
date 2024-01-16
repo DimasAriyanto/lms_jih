@@ -42,7 +42,7 @@
 
                     <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                         role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                        <a href="{{ route('filament.admin.auth.login') }}" class="block px-4 py-2 text-sm text-gray-700"
+                        <a href="{{ route('auth.login') }}" class="block px-4 py-2 text-sm text-gray-700"
                             role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
                         <form action="{{ route('filament.admin.auth.logout') }}" method="post">
                             @csrf
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             @else
-                <a href="{{ route('filament.admin.auth.login') }}" class="text-sm font-semibold leading-6 text-gray-900">Log
+                <a href="{{ route('auth.login') }}" class="text-sm font-semibold leading-6 text-gray-900">Log
                     in
                     <span aria-hidden="true">&rarr;</span></a>
             @endauth

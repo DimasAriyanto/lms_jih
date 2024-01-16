@@ -219,4 +219,9 @@ class PelatihanResource extends Resource
             'edit' => Pages\EditPelatihan::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }

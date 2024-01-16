@@ -6,6 +6,7 @@ use App\Filament\Resources\KategoriResource\Pages;
 use App\Filament\Resources\KategoriResource\RelationManagers;
 use App\Models\Kategori;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -18,6 +19,8 @@ class KategoriResource extends Resource
 {
     protected static ?string $model = Kategori::class;
 
+    protected static ?string $navigationLabel = 'Kategori';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Management Pelatihan';
@@ -26,7 +29,9 @@ class KategoriResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('nama')
+                    ->unique()
+                    ->required()
             ]);
     }
 
@@ -45,6 +50,7 @@ class KategoriResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -67,6 +73,7 @@ class KategoriResource extends Resource
         return [
             'index' => Pages\ListKategoris::route('/'),
             'create' => Pages\CreateKategori::route('/create'),
+            'view' => Pages\ViewKategori::route('/{record}'),
             'edit' => Pages\EditKategori::route('/{record}/edit'),
         ];
     }
