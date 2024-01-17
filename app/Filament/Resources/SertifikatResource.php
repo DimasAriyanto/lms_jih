@@ -21,7 +21,7 @@ class SertifikatResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document';
 
-    protected static ?string $navigationGroup = 'Management Pendaftaran';
+    protected static ?string $navigationGroup = 'Management Pelatihan';
 
     public static function form(Form $form): Form
     {

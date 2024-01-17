@@ -88,29 +88,6 @@ class PelatihanResource extends Resource
                             ->required(),
                     ])->columns(2),
 
-                Section::make('Peserta')
-                    ->schema([
-                        Select::make('jenis_kuota')
-                            ->options([
-                                'limited' => 'Limited',
-                                'unlimited' => 'Unlimited'
-                            ])
-                            ->native(false)
-                            ->searchable()
-                            ->required(),
-                        TextInput::make('kuota')
-                            ->numeric()
-                            ->required(),
-                        Select::make('jenis_pelaksanaan')
-                            ->options([
-                                'khusus' => 'Khusus',
-                                'umum' => 'Umum'
-                            ])
-                            ->native(false)
-                            ->searchable()
-                            ->required(),
-                    ]),
-
                 Section::make('Status Pelaksanaa')
                     ->schema([
                         Radio::make('status_selesai')
@@ -118,12 +95,6 @@ class PelatihanResource extends Resource
                                 'belum' => 'Belum',
                                 'selesai' => 'Selesai',
                             ]),
-                        Radio::make('status_acc')
-                            ->options([
-                                'ditolak' => 'Ditolak',
-                                'menunggu' => 'Menunggu',
-                                'disetujui' => 'Disetujui',
-                            ])
                     ])->visibleOn('view'),
             ]);
     }

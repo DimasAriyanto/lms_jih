@@ -32,6 +32,7 @@ class User extends Authenticatable implements HasMedia, FilamentUser
         'email',
         'alamat',
         'no_hp',
+        'role',
         'password',
     ];
 
@@ -60,19 +61,14 @@ class User extends Authenticatable implements HasMedia, FilamentUser
         return str_ends_with($this->email, '@gmail.com');
     }
 
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class, 'role_user');
-    }
-
     public function pelatihan(): HasMany
     {
         return $this->hasMany(Pelatihan::class, 'pelatihan_id', 'id');
     }
 
-    public function pendaftar(): HasMany
+    public function peserta(): BelongsToMany
     {
-        return $this->hasMany(Pendaftaran::class, 'pendaftaran_id', 'id');
+        return $this->belongsToMany(Pelatihan::class, 'peserta');
     }
 
     public function registerMediaConversions(Media $media = null): void

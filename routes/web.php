@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Livewire\Auth\Login;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,5 +18,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
 
+// Route::get('/login', Login::class)->name('auth.login');
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::get('/register', [AuthController::class, 'register'])->name('auth.register');

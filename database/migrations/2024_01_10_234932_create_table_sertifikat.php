@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('sertifikat', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sertifikat_id');
+            $table->unsignedBigInteger('pelatihan_id');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('sertifikat_id')->references('id')->on('sertifikat');
+            $table->foreign('pelatihan_id')->references('id')->on('pelatihan');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('image_url');
             $table->date('tanggal_terbit');
