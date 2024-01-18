@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pelatihan extends Model
@@ -21,14 +22,9 @@ class Pelatihan extends Model
         'tempat_pelaksanaan',
         'jam_mulai',
         'jam_selesai',
-        'jenis_kuota',
-        'kuota',
-        'jenis_pelaksanaan',
-        'status_selesai',
-        'status_acc',
+        'status_pelaksanaan',
         'kategori_id',
         'user_id',
-        'is_aktif',
     ];
 
     public function kategori(): BelongsTo
@@ -41,9 +37,9 @@ class Pelatihan extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function pendaftaran(): HasMany
+    public function peserta(): BelongsToMany
     {
-        return $this->hasMany(Pendaftaran::class, 'pelatihan_id', 'id');
+        return $this->belongsToMany(User::class, 'peserta');
     }
 
     public function sertifikat(): HasMany

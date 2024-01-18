@@ -13,6 +13,7 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -83,7 +84,7 @@ class PelatihanResource extends Resource
 
                 Section::make('Waktu dan Tempat Pelaksanaan')
                     ->schema([
-                        TextInput::make('tampat_pelaksanaan')
+                        TextInput::make('tempat_pelaksanaan')
                             ->required(),
                         DatePicker::make('tanggal_pelaksanaan')
                             ->native(false)
@@ -95,42 +96,47 @@ class PelatihanResource extends Resource
                             ->required(),
                     ])->columns(2),
 
-                Section::make('Peserta')
+                Section::make('Mentor')
                     ->schema([
-                        Select::make('jenis_kuota')
-                            ->options([
-                                'limited' => 'Limited',
-                                'unlimited' => 'Unlimited'
-                            ])
+                        Select::make('user_id')
+                            ->relationship('mentor', 'name')
                             ->native(false)
+                            ->preload()
                             ->searchable()
-                            ->required(),
-                        TextInput::make('kuota')
-                            ->numeric()
-                            ->required(),
-                        Select::make('jenis_pelaksanaan')
-                            ->options([
-                                'khusus' => 'Khusus',
-                                'umum' => 'Umum'
+                            ->hiddenLabel()
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->required(),
+                                TextInput::make('email')
+                                    ->required(),
+                                TextInput::make('password')
+                                    ->required(),
+                                Hidden::make('role')
+                                    ->default('Mentor'),
                             ])
-                            ->native(false)
-                            ->searchable()
                             ->required(),
                     ]),
 
-                Section::make('Status Pelaksanaan')
+                Section::make('Peserta')
                     ->schema([
-                        Radio::make('status_selesai')
-                            ->options([
-                                'belum' => 'Belum',
-                                'selesai' => 'Selesai',
-                            ]),
-                        Radio::make('status_acc')
-                            ->options([
-                                'ditolak' => 'Ditolak',
-                                'menunggu' => 'Menunggu',
-                                'disetujui' => 'Disetujui',
+                        Select::make('peserta')
+                            ->multiple()
+                            ->relationship('peserta', 'name')
+                            ->native(false)
+                            ->preload()
+                            ->searchable()
+                            ->hiddenLabel()
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->required(),
+                                TextInput::make('email')
+                                    ->required(),
+                                TextInput::make('password')
+                                    ->required(),
+                                Hidden::make('role')
+                                    ->default('Pegawai'),
                             ])
+                            ->required(),
                     ]),
             ]);
     }
@@ -193,7 +199,7 @@ class PelatihanResource extends Resource
                 ActionGroup::make([
                     ViewAction::make(),
                     EditAction::make(),
-                    // DeleteAction::make(),
+                    DeleteAction::make(),
                 ])->tooltip('Actions')
             ])
             ->bulkActions([
@@ -214,7 +220,7 @@ class PelatihanResource extends Resource
     {
         return [
             'index' => Pages\ListPelatihans::route('/'),
-            // 'create' => Pages\CreatePelatihan::route('/create'),
+            'create' => Pages\CreatePelatihan::route('/create'),
             'view' => Pages\ViewPelatihan::route('/{record}'),
             'edit' => Pages\EditPelatihan::route('/{record}/edit'),
         ];

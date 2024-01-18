@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('alamat')->nullable();
             $table->string('no_hp')->nullable();
+            $table->enum('role', ['pegawai', 'mentor', 'admin'])->default('pegawai');
             $table->string('password');
             $table->boolean('is_verified')->default(false);
             $table->rememberToken();

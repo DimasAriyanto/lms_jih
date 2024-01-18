@@ -20,11 +20,7 @@ return new class extends Migration
             $table->text('tempat_pelaksanaan');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
-            $table->enum('jenis_kuota', ['limitid', 'unlimited']);
-            $table->integer('kuota');
-            $table->enum('jenis_pelaksanaan', ['khuhus', 'umum']);
-            $table->enum('status_selesai', ['sudah', 'belum'])->default('belum');
-            $table->enum('status_acc', ['disetujui', 'menunggu', 'ditolak'])->default('menunggu');
+            $table->enum('status_pelaksanaan', ['selesai', 'proses', 'batal'])->default('proses');
             $table->unsignedBigInteger('kategori_id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('kategori_id')->references('id')->on('kategori');

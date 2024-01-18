@@ -82,11 +82,15 @@ class UserResource extends Resource
 
                 Section::make('Role')
                     ->schema([
-                        Select::make('roles')
-                            ->multiple()
-                            ->relationship('roles', 'nama')
+                        Select::make('role')
+                            ->options([
+                                'admin' => 'Admin',
+                                'mentor' => 'Mentor',
+                                'pegawai' => 'Pegawai',
+                            ])
+                            ->native(false)
                             ->searchable()
-                            ->preload()
+                            ->required()
                             ->hiddenLabel(),
                     ]),
 
@@ -117,17 +121,17 @@ class UserResource extends Resource
                 IconColumn::make('is_verified')
                     ->label('Verified')
                     ->boolean(),
-                TextColumn::make('roles.nama')
-                    ->listWithLineBreaks()
-                    ->bulleted()
+                TextColumn::make('role')
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('roles')
-                    ->multiple()
-                    ->preload()
-                    ->relationship('roles', 'nama'),
-                Tables\Filters\Filter::make('verified')
-                    ->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at')),
+                Tables\Filters\SelectFilter::make('role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'mentor' => 'Mentor',
+                        'pegawai' => 'Pegawai',
+                    ]),
+                Tables\Filters\Filter::make('is_verified')
+                    ->query(fn (Builder $query): Builder => $query->whereNotNull('is_verified')),
             ])
             ->actions([
                 ActionGroup::make([
@@ -146,7 +150,6 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RolesRelationManager::class
         ];
     }
 
@@ -154,7 +157,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ListUsers::route('/'),
-            // 'create' => Pages\CreateUser::route('/create'),
+            'create' => Pages\CreateUser::route('/create'),
             'view' => Pages\ViewUser::route('/{record}'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
