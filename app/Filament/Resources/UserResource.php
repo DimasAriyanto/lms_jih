@@ -69,8 +69,7 @@ class UserResource extends Resource
                             ->directory('uploads')
                             ->visibility('public')
                             ->openable()
-                            ->downloadable()
-                            ->required(),
+                            ->downloadable(),
                     ])->columns(1),
 
                 Section::make('Data Diri')
