@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.app>
     <x-slot:title>
         Home Page
     </x-slot:title>
@@ -41,4 +41,4 @@
             </div>
         </div>
     </div>
-</x-layout>
+</x-layouts.app>

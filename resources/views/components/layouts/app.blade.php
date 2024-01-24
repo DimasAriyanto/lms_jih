@@ -18,7 +18,7 @@
         @filamentStyles
         @vite('resources/css/app.css')
     </head>
-    {{-- <x-navbar /> --}}
+    <x-navbar />
 
     <body class="antialiased">
         {{ $slot }}

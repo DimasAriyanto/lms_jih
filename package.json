@@ -17,6 +17,5 @@
         "@tailwindcss/forms": "^0.5.7",
         "@tailwindcss/typography": "^0.5.10",
         "postcss-nesting": "^12.0.2"
->>>>>>> 1814b02dfc6c152fb887d76f6570b8592dd007ac
     }
 }

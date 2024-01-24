@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Pelatihan extends Model
 {
@@ -22,6 +23,12 @@ class Pelatihan extends Model
         'tempat_pelaksanaan',
         'jam_mulai',
         'jam_selesai',
+        'jenis_pelaksanaan',
+        'kuota',
+        'tanggal_mulai_pendaftaran',
+        'tanggal_akhir_pendaftaran',
+        'harga',
+        'diskon',
         'status_pelaksanaan',
         'kategori_id',
         'user_id',
@@ -37,9 +44,9 @@ class Pelatihan extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function peserta(): BelongsToMany
+    public function pendaftaran(): HasOne
     {
-        return $this->belongsToMany(User::class, 'peserta');
+        return $this->hasOne(Pendaftaran::class, 'pelatihan_id', 'id');
     }
 
     public function sertifikat(): HasMany

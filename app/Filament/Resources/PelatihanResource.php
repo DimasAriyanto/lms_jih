@@ -96,6 +96,25 @@ class PelatihanResource extends Resource
                             ->required(),
                     ])->columns(2),
 
+                Section::make('Pendaftaran')
+                    ->schema([
+                        Select::make('jenis_pelaksanaan')
+                            ->options([
+                                'terbatas' => 'Terbatas',
+                                'umum' => 'Umum',
+                            ])
+                            ->required(),
+                        TextInput::make('kuota')
+                            ->numeric()
+                            ->required(),
+                        DatePicker::make('tanggal_mulai_pendaftaran')
+                            ->native(false)
+                            ->required(),
+                        DatePicker::make('tanggal_akhir_pendaftaran')
+                            ->native(false)
+                            ->required(),
+                    ])->columns(2),
+
                 Section::make('Mentor')
                     ->schema([
                         Select::make('user_id')
@@ -112,31 +131,21 @@ class PelatihanResource extends Resource
                                 TextInput::make('password')
                                     ->required(),
                                 Hidden::make('role')
-                                    ->default('Mentor'),
+                                    ->default('mentor'),
                             ])
                             ->required(),
                     ]),
 
-                Section::make('Peserta')
+                Section::make('Status Pelaksanaan')
                     ->schema([
-                        Select::make('peserta')
-                            ->multiple()
-                            ->relationship('peserta', 'name')
-                            ->native(false)
-                            ->preload()
-                            ->searchable()
-                            ->hiddenLabel()
-                            ->createOptionForm([
-                                TextInput::make('name')
-                                    ->required(),
-                                TextInput::make('email')
-                                    ->required(),
-                                TextInput::make('password')
-                                    ->required(),
-                                Hidden::make('role')
-                                    ->default('Pegawai'),
+                        Radio::make('status_pelaksanaan')
+                            ->options([
+                                'selesai' => 'Selesai',
+                                'proses' => 'Proses',
+                                'batal' => 'Batal',
                             ])
-                            ->required(),
+                            ->hiddenLabel()
+                            ->hiddenOn('create')
                     ]),
             ]);
     }
@@ -157,18 +166,13 @@ class PelatihanResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->url(fn () => route('filament.admin.auth.profile')),
-                TextColumn::make('status_selesai')
+                TextColumn::make('tanggal_pelaksanaan'),
+                TextColumn::make('status_pelaksanaan')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'belum' => 'warning',
-                        'sudah' => 'success',
-                    }),
-                TextColumn::make('status_acc')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'ditolak' => 'danger',
-                        'menunggu' => 'warning',
-                        'disetujui' => 'success',
+                        'proses' => 'warning',
+                        'selesai' => 'success',
+                        'batal' => 'danger',
                     }),
             ])
             ->filters([
@@ -177,16 +181,11 @@ class PelatihanResource extends Resource
                         'limited' => 'Limited',
                         'unlimited' => 'Unlimited'
                     ]),
-                SelectFilter::make('status_selesai')
+                SelectFilter::make('status_pelaksanaan')
                     ->options([
-                        'sudah' => 'Sudah',
-                        'belum' => 'Belum'
-                    ]),
-                SelectFilter::make('status_acc')
-                    ->options([
-                        'ditolak' => 'Ditolak',
-                        'menunggu' => 'Menunggu',
-                        'disetujui' => 'Disetujui',
+                        'selesai' => 'Selesai',
+                        'proses' => 'Proses',
+                        'batal' => 'Batal'
                     ]),
                 SelectFilter::make('mentor')
                     ->preload()
@@ -212,7 +211,7 @@ class PelatihanResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\PendaftaranRelationManager::class,
         ];
     }
 

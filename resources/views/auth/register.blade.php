@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts>
     <x-slot:title>
         Register
     </x-slot:title>
@@ -64,4 +64,5 @@
                     class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Login</a>
             </p>
         </div>
-    </div </x-layout>
+    </div
+</x-layout>

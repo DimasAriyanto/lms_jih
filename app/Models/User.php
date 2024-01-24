@@ -9,6 +9,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -33,6 +34,7 @@ class User extends Authenticatable implements HasMedia, FilamentUser
         'alamat',
         'no_hp',
         'role',
+        'is_verified',
         'password',
     ];
 
@@ -66,9 +68,9 @@ class User extends Authenticatable implements HasMedia, FilamentUser
         return $this->hasMany(Pelatihan::class, 'pelatihan_id', 'id');
     }
 
-    public function peserta(): BelongsToMany
+    public function pendaftaran(): HasOne
     {
-        return $this->belongsToMany(Pelatihan::class, 'peserta');
+        return $this->hasOne(Pendaftaran::class, 'user_id', 'id');
     }
 
     public function registerMediaConversions(Media $media = null): void

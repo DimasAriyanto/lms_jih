@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SertifikatResource\Pages;
-use App\Filament\Resources\SertifikatResource\RelationManagers;
-use App\Models\Sertifikat;
+use App\Filament\Resources\PendaftaranResource\Pages;
+use App\Filament\Resources\PendaftaranResource\RelationManagers;
+use App\Models\Pendaftaran;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,13 +14,13 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SertifikatResource extends Resource
+class PendaftaranResource extends Resource
 {
-    protected static ?string $model = Sertifikat::class;
+    protected static ?string $model = Pendaftaran::class;
 
-    protected static ?string $navigationLabel = 'Sertifikat';
+    protected static ?string $navigationLabel = 'Pendaftaran';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Management Pelatihan';
 
@@ -41,11 +41,11 @@ class SertifikatResource extends Resource
                 TextColumn::make('pelatihan.nama')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('user.name')
+                TextColumn::make('peserta.name')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('tanggal_terbit')
-                    ->sortable(),
+                TextColumn::make('tanggal_pendaftaran'),
+                TextColumn::make('status_pembayaran'),
             ])
             ->filters([
                 //
@@ -62,17 +62,15 @@ class SertifikatResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSertifikats::route('/'),
-            'create' => Pages\CreateSertifikat::route('/create'),
-            'edit' => Pages\EditSertifikat::route('/{record}/edit'),
+            'index' => Pages\ListPendaftarans::route('/'),
+            'create' => Pages\CreatePendaftaran::route('/create'),
+            'edit' => Pages\EditPendaftaran::route('/{record}/edit'),
         ];
     }
 }

@@ -31,7 +31,7 @@ class Login extends Component implements HasForms
 
     public function login():void
     {
-        
+        dd($this->form->getState());
     }
 
     public function render()

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Mentor\Resources\PelatihanResource\Pages;
+namespace App\Filament\App\Resources\PelatihanResource\Pages;
 
-use App\Filament\Mentor\Resources\PelatihanResource;
+use App\Filament\App\Resources\PelatihanResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

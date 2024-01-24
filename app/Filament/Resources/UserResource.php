@@ -26,6 +26,8 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -124,14 +126,14 @@ class UserResource extends Resource
                 TextColumn::make('role')
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('role')
+                SelectFilter::make('role')
                     ->options([
                         'admin' => 'Admin',
                         'mentor' => 'Mentor',
                         'pegawai' => 'Pegawai',
                     ]),
-                Tables\Filters\Filter::make('is_verified')
-                    ->query(fn (Builder $query): Builder => $query->whereNotNull('is_verified')),
+                Filter::make('is_verified')
+                    // ->query(fn (Builder $query): Builder => $query->whereNotNull('is_verified')),
             ])
             ->actions([
                 ActionGroup::make([

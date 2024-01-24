@@ -19,8 +19,8 @@
             </button>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-            <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
-            <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Courses</a>
+            <a href="{{ route('index') }}" class="text-sm font-semibold leading-6 text-gray-900">Home</a>
+            <a href="{{ route('course.create') }}" class="text-sm font-semibold leading-6 text-gray-900">Courses</a>
             <a href="#" class="text-sm font-semibold leading-6 text-gray-900">About</a>
         </div>
         <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -42,9 +42,9 @@
 
                     <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                         role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                        <a href="{{ route('auth.login') }}" class="block px-4 py-2 text-sm text-gray-700"
+                        <a href="{{ route('filament.app.pages.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700"
                             role="menuitem" tabindex="-1" id="user-menu-item-0">Dashboard</a>
-                        <form action="{{ route('filament.admin.auth.logout') }}" method="post">
+                        <form action="{{ route('filament.app.auth.logout') }}" method="post">
                             @csrf
                             <button type="submit" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"
                                 tabindex="-1" id="user-menu-item-2">
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             @else
-                <a href="{{ route('auth.login') }}" class="text-sm font-semibold leading-6 text-gray-900">Log
+                <a href="{{ route('filament.app.auth.login') }}" class="text-sm font-semibold leading-6 text-gray-900">Log
                     in
                     <span aria-hidden="true">&rarr;</span></a>
             @endauth

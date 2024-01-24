@@ -20,6 +20,12 @@ return new class extends Migration
             $table->text('tempat_pelaksanaan');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
+            $table->enum('jenis_pelaksanaan', ['terbatas', 'umum']);
+            $table->integer('kuota');
+            $table->date('tanggal_mulai_pendaftaran');
+            $table->date('tanggal_akhir_pendaftaran');
+            $table->float('harga')->default(0);
+            $table->integer('diskon')->default(0);
             $table->enum('status_pelaksanaan', ['selesai', 'proses', 'batal'])->default('proses');
             $table->unsignedBigInteger('kategori_id');
             $table->unsignedBigInteger('user_id');

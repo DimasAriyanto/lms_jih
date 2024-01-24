@@ -1,13 +1,18 @@
 <?php
 
-namespace App\Filament\Mentor\Resources;
+namespace App\Filament\App\Resources;
 
-use App\Filament\Mentor\Resources\PelatihanResource\Pages;
-use App\Filament\Mentor\Resources\PelatihanResource\RelationManagers;
+use App\Filament\App\Resources\PelatihanResource\Pages;
+use App\Filament\App\Resources\PelatihanResource\RelationManagers;
 use App\Models\Pelatihan;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -34,7 +39,6 @@ class PelatihanResource extends Resource
 
     public static function form(Form $form): Form
     {
-        // dd(auth()->id());
         return $form
             ->schema([
                 Section::make()
@@ -53,7 +57,6 @@ class PelatihanResource extends Resource
                             ->required(),
                         Textarea::make('deskripsi')
                             ->columnSpan('full')
-                            ->autosize()
                             ->required(),
                     ])->columns(2),
 
@@ -72,6 +75,7 @@ class PelatihanResource extends Resource
                             ->visibility('public')
                             ->openable()
                             ->downloadable()
+                            ->maxSize(10240)
                             ->required(),
                     ]),
 
@@ -83,19 +87,63 @@ class PelatihanResource extends Resource
                             ->native(false)
                             ->required(),
                         TimePicker::make('jam_mulai')
+                            // ->timezone('Indonesia/Jakarta')
                             ->required(),
                         TimePicker::make('jam_selesai')
                             ->required(),
                     ])->columns(2),
 
-                Section::make('Status Pelaksanaa')
+                Section::make('Pendaftaran')
                     ->schema([
-                        Radio::make('status_selesai')
+                        Select::make('jenis_pelaksanaan')
                             ->options([
-                                'belum' => 'Belum',
+                                'terbatas' => 'Terbatas',
+                                'umum' => 'Umum',
+                            ])
+                            ->required(),
+                        TextInput::make('kuota')
+                            ->numeric()
+                            ->required(),
+                        DatePicker::make('tanggal_mulai_pendaftaran')
+                            ->native(false)
+                            ->required(),
+                        DatePicker::make('tanggal_akhir_pendaftaran')
+                            ->native(false)
+                            ->required(),
+                    ])->columns(2),
+
+                Section::make('Mentor')
+                    ->schema([
+                        Select::make('user_id')
+                            ->relationship('mentor', 'name')
+                            ->native(false)
+                            ->preload()
+                            ->searchable()
+                            ->hiddenLabel()
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                    ->required(),
+                                TextInput::make('email')
+                                    ->required(),
+                                TextInput::make('password')
+                                    ->required(),
+                                Hidden::make('role')
+                                    ->default('mentor'),
+                            ])
+                            ->required(),
+                    ]),
+
+                Section::make('Status Pelaksanaan')
+                    ->schema([
+                        Radio::make('status_pelaksanaan')
+                            ->options([
                                 'selesai' => 'Selesai',
-                            ]),
-                    ])->visibleOn('view'),
+                                'proses' => 'Proses',
+                                'batal' => 'Batal',
+                            ])
+                            ->hiddenLabel()
+                            ->hiddenOn('create')
+                    ]),
             ]);
     }
 
@@ -111,21 +159,17 @@ class PelatihanResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->translateLabel(),
-                TextColumn::make('tanggal_pelaksanaan')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('status_selesai')
+                TextColumn::make('mentor.name')
+                    ->sortable()
+                    ->searchable()
+                    ->url(fn () => route('filament.admin.auth.profile')),
+                TextColumn::make('tanggal_pelaksanaan'),
+                TextColumn::make('status_pelaksanaan')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'belum' => 'warning',
-                        'sudah' => 'success',
-                    }),
-                TextColumn::make('status_acc')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'ditolak' => 'danger    ',
-                        'menunggu' => 'warning',
-                        'sudah' => 'success',
+                        'proses' => 'warning',
+                        'selesai' => 'success',
+                        'batal' => 'danger',
                     }),
             ])
             ->filters([
@@ -134,21 +178,25 @@ class PelatihanResource extends Resource
                         'limited' => 'Limited',
                         'unlimited' => 'Unlimited'
                     ]),
-                SelectFilter::make('status_selesai')
+                SelectFilter::make('status_pelaksanaan')
                     ->options([
-                        'sudah' => 'Sudah',
-                        'belum' => 'Belum'
+                        'selesai' => 'Selesai',
+                        'proses' => 'Proses',
+                        'batal' => 'Batal'
                     ]),
-                SelectFilter::make('status_acc')
-                    ->options([
-                        'ditolak' => 'Ditolak',
-                        'menunggu' => 'Menunggu',
-                        'disetujui' => 'Disetujui',
-                    ])
+                SelectFilter::make('mentor')
+                    ->preload()
+                    ->relationship('mentor', 'name'),
+                SelectFilter::make('kategori')
+                    ->preload()
+                    ->relationship('kategori', 'nama'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                // ActionGroup::make([
+                //     ViewAction::make(),
+                //     EditAction::make(),
+                //     DeleteAction::make(),
+                // ])->tooltip('Actions')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -160,7 +208,7 @@ class PelatihanResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\PendaftaranRelationManager::class,
         ];
     }
 
@@ -172,5 +220,15 @@ class PelatihanResource extends Resource
             'view' => Pages\ViewPelatihan::route('/{record}'),
             'edit' => Pages\EditPelatihan::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return parent::getEloquentQuery()->where('user_id', auth()->id())->count();
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', auth()->id());
     }
 }
