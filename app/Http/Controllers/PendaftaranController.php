@@ -26,7 +26,6 @@ class PendaftaranController extends Controller
                 'harga' => $item->harga,
             ];
         });
-        // dd($pelatihan);
         return view('course', compact('pelatihan'));
     }
 
@@ -41,7 +40,7 @@ class PendaftaranController extends Controller
                 'status_pembayaran' => 'belum',
             ]);
 
-            return redirect()->route('course.create')->with('success', 'Berhasil mengikuti pelatihan');
+            return to_route('course.create')->with('success', 'Berhasil mengikuti pelatihan');
         } catch (ModelNotFoundException $e) {
             // dd($e);
             return redirect()->back()->with('error', 'Pendaftaran gagal' . $e->getMessage());
