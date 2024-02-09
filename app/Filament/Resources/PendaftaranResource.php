@@ -9,10 +9,13 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class PendaftaranResource extends Resource
 {
@@ -36,8 +39,16 @@ class PendaftaranResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->sortable(),
+                TextColumn::make('No')->state(
+                    static function (HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 TextColumn::make('pelatihan.nama')
                     ->sortable()
                     ->searchable(),
@@ -45,7 +56,14 @@ class PendaftaranResource extends Resource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('tanggal_pendaftaran'),
-                TextColumn::make('status_pembayaran'),
+                IconColumn::make('tanggal_pembayaran')
+                    ->label('Status Pembayaran')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-badge')
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->default(0),
+                TextColumn::make('tanggal_pembayaran'),
+                TextColumn::make('metode_pembayaran'),
             ])
             ->filters([
                 //

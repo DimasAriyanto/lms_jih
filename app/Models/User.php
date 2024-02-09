@@ -6,10 +6,11 @@ namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -18,9 +19,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable implements HasMedia, FilamentUser
+class User extends Authenticatable implements HasMedia, FilamentUser, MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -34,7 +35,7 @@ class User extends Authenticatable implements HasMedia, FilamentUser
         'alamat',
         'no_hp',
         'role',
-        'is_verified',
+        'email_verified_at',
         'password',
     ];
 
@@ -54,13 +55,13 @@ class User extends Authenticatable implements HasMedia, FilamentUser
      * @var array<string, string>
      */
     protected $casts = [
-        'is_verified' => 'boolean',
+        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with($this->email, '@gmail.com');
+        return $this->email_verified_at !== null;
     }
 
     public function pelatihan(): HasMany

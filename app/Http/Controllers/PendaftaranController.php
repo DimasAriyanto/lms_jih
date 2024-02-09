@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pelatihan;
 use App\Models\Pendaftaran;
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -31,19 +29,27 @@ class PendaftaranController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->pelatihan_id, Auth::user()->id, Carbon::now());
         try {
-            Pendaftaran::create([
+            $user = Auth::user();
+            $pendaftaran = Pendaftaran::where([
+                'user_id' => $user->id,
                 'pelatihan_id' => $request->pelatihan_id,
-                'user_id' => Auth::user()->id,
-                'tanggal_pendaftaran' => Carbon::now(),
-                'status_pembayaran' => 'belum',
-            ]);
+            ])->exists();
+            if (!$pendaftaran) {
+                if ($user->role === 'pegawai' || $user->role === 'umum') {
+                    Pendaftaran::create([
+                        'pelatihan_id' => $request->pelatihan_id,
+                        'user_id' => Auth::user()->id,
+                    ]);
 
-            return to_route('course.create')->with('success', 'Berhasil mengikuti pelatihan');
-        } catch (ModelNotFoundException $e) {
-            // dd($e);
-            return redirect()->back()->with('error', 'Pendaftaran gagal' . $e->getMessage());
+                    return to_route('course.create')->with('success', 'Berhasil mengikuti pelatihan');
+                }
+
+                return redirect()->back()->with('error', 'Hanya pegawai dan umum yang boleh mendaftar');
+            }
+            return redirect()->back()->with('error', 'Tidak boleh mendaftar lebih dari sekali');
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors('error', $e->getMessage());
         }
     }
 }

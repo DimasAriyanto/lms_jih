@@ -13,7 +13,7 @@ class PendaftaranPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin' || $user->role === 'pegawai' || $user->role === 'umum' || $user->role === 'mentor';
+        return $user->role === 'admin' || $user->role === 'pegawai' || $user->role === 'umum';
         // return true;
 
     }

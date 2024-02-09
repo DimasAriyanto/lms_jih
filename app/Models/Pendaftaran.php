@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pendaftaran extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'pendaftaran';
 
@@ -16,7 +17,8 @@ class Pendaftaran extends Model
         'pelatihan_id',
         'user_id',
         'tanggal_pendaftaran',
-        'status_pembayaran',
+        'tanggal_pembayaran',
+        'metode_pembayaran',
     ];
 
     public function peserta(): BelongsTo

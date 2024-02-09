@@ -14,10 +14,13 @@ use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class PendaftaranResource extends Resource
 {
@@ -35,13 +38,12 @@ class PendaftaranResource extends Resource
                     ->relationship(name: 'pelatihan', titleAttribute: 'nama'),
                 DatePicker::make('tanggal_pendaftaran')
                     ->native(false),
-                Radio::make('status_pembayaran')
-                    ->options([
-                        'sudah' => 'Sudah',
-                        'belum' => 'Belum',
-                    ])
-                    ->inline()
-                    ->inlineLabel(false),
+                DatePicker::make('tanggal_pembayaran')
+                    ->native(false)
+                    ->required(),
+                TextInput::make('metode_pembayaran')
+                    ->numeric()
+                    ->required(),
             ])->columns(1);
     }
 
@@ -49,28 +51,28 @@ class PendaftaranResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->sortable(),
+                TextColumn::make('No')
+                    ->rowIndex(),
                 TextColumn::make('pelatihan.nama')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('tanggal_pendaftaran')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('status_pembayaran')
+                TextColumn::make('tanggal_pembayaran')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'belum' => 'warning',
-                        'sudah' => 'success',
-                    })
-                    ->sortable()
-                    ->searchable(),
+                    ->color(fn ($state) => $state !== 'Belum Membayar' ? 'success' : 'danger')
+                    ->default('Belum Membayar'),
+                TextColumn::make('metode_pembayaran')
+                    ->badge()
+                    ->color(fn ($state) => $state !== 'Belum Membayar' ? 'success' : 'danger')
+                    ->default('Belum Membayar'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 // Tables\Actions\ActionGroup::make([
                 // ])
                 //     ->button()
@@ -107,4 +109,14 @@ class PendaftaranResource extends Resource
     //         Pages\ViewPendaftaranPelatihan::class,
     //     ]);
     // }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return parent::getEloquentQuery()->where('user_id', auth()->id())->count();
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('user_id', auth()->id());
+    }
 }

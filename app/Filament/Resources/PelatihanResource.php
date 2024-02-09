@@ -25,10 +25,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class PelatihanResource extends Resource
 {
@@ -118,7 +120,7 @@ class PelatihanResource extends Resource
                 Section::make('Mentor')
                     ->schema([
                         Select::make('user_id')
-                            ->relationship('mentor', 'name')
+                            ->relationship(name: 'mentor', titleAttribute: 'name', modifyQueryUsing: fn (Builder $query) => $query->where('role', 'mentor'))
                             ->native(false)
                             ->preload()
                             ->searchable()
@@ -145,8 +147,8 @@ class PelatihanResource extends Resource
                                 'batal' => 'Batal',
                             ])
                             ->hiddenLabel()
-                            ->hiddenOn('create')
-                    ]),
+                    ])
+                    ->hiddenOn('create'),
             ]);
     }
 
@@ -154,9 +156,18 @@ class PelatihanResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->sortable(),
+                TextColumn::make('No')->state(
+                    static function (HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 ImageColumn::make('image_url')
+                    ->square()
                     ->label('Photo'),
                 TextColumn::make('nama')
                     ->sortable()
@@ -164,8 +175,7 @@ class PelatihanResource extends Resource
                     ->translateLabel(),
                 TextColumn::make('mentor.name')
                     ->sortable()
-                    ->searchable()
-                    ->url(fn () => route('filament.admin.auth.profile')),
+                    ->searchable(),
                 TextColumn::make('tanggal_pelaksanaan'),
                 TextColumn::make('status_pelaksanaan')
                     ->badge()

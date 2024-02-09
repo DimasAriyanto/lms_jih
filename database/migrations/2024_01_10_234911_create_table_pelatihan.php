@@ -27,11 +27,10 @@ return new class extends Migration
             $table->float('harga')->default(0);
             $table->integer('diskon')->default(0);
             $table->enum('status_pelaksanaan', ['selesai', 'proses', 'batal'])->default('proses');
-            $table->unsignedBigInteger('kategori_id');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('kategori_id')->references('id')->on('kategori');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('kategori_id')->constrained(table: 'kategori');
+            $table->foreignId('user_id')->constrained(table: 'users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

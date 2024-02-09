@@ -26,11 +26,13 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class UserResource extends Resource
 {
@@ -88,6 +90,7 @@ class UserResource extends Resource
                                 'admin' => 'Admin',
                                 'mentor' => 'Mentor',
                                 'pegawai' => 'Pegawai',
+                                'umum' => 'Umum',
                             ])
                             ->native(false)
                             ->searchable()
@@ -109,19 +112,33 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->sortable(),
+                TextColumn::make('No')->state(
+                    static function (HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 ImageColumn::make('image_url')
-                    ->label('Photo'),
+                    ->label('Photo')
+                    // ->width(100)
+                    ->defaultImageUrl(url('images/default.jpg'))
+                    ->circular(true),
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable()
                     ->translateLabel(),
                 TextColumn::make('email')
                     ->icon('heroicon-m-envelope'),
-                IconColumn::make('is_verified')
+                IconColumn::make('email_verified_at')
                     ->label('Verified')
-                    ->boolean(),
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-badge')
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->default(0),
                 TextColumn::make('role')
             ])
             ->filters([
@@ -132,7 +149,7 @@ class UserResource extends Resource
                         'pegawai' => 'Pegawai',
                     ]),
                 Filter::make('is_verified')
-                    // ->query(fn (Builder $query): Builder => $query->whereNotNull('is_verified')),
+                // ->query(fn (Builder $query): Builder => $query->whereNotNull('is_verified')),
             ])
             ->actions([
                 ActionGroup::make([
@@ -150,8 +167,7 @@ class UserResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -187,4 +203,9 @@ class UserResource extends Resource
     //             ->modifyQueryUsing(fn (Builder $query) => $query->where('is_verified', false)),
     //     ];
     // }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }
