@@ -7,7 +7,7 @@
                     <div class="grid md:grid-cols-12 grid-cols-1 gap-[30px]">
                         <div class="lg:col-span-4 md:col-span-12">
                             <a href="#logo" class="flex">
-                                <img src="/image/logo.png" alt="">
+                                <img src="{{asset('images/logo.png')}}" alt="">
                                 <div class="text-logo">
                                     <h1 class="text-3xl py-1 px-4 font-bold">JIH</h1>
                                     <h2 class="text-2xl px-4 font-bold">Academy</h2>
@@ -128,13 +128,13 @@
                                 Contact
                             </h5>
                             <div class="flex">
-                                <img src="/image/phone.svg" alt="" class="w-5 mt-6">
+                                <img src="{{asset('images/phone.svg')}}" alt="" class="w-5 mt-6">
                                 <p class="mt-6 px-2">
                                     +628-423-675-19
                                 </p>
                             </div>
                             <div class="flex">
-                                <img src="/image/mail.svg" alt="" class="w-5 mt-6">
+                                <img src="{{asset('images/mail.svg')}}" alt="" class="w-5 mt-6">
                                 <p class="mt-6 px-2">
                                     LMSJIH@gmail.com
                                 </p>
