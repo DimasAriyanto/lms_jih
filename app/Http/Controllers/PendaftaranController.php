@@ -24,7 +24,7 @@ class PendaftaranController extends Controller
                 'harga' => $item->harga,
             ];
         });
-        return view('course', compact('pelatihan'));
+        return view('pendaftaran', compact('pelatihan'));
     }
 
     public function store(Request $request)
