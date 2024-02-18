@@ -1,0 +1,130 @@
+:root {
+    --primary: #14b8a6;
+    --primaryan: #116e63;
+    --blue: #133781;
+    --border: #d2d2d2;
+    --button-open: #45c440;
+    --red: #db1b1b;
+}
+body {
+    font-family: "inter", sans-serif;
+    background-color: #f6f8fd;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+/* navbar start */
+.navbar-nav {
+    background-color: #fff;
+}
+.text-logo h1 {
+    color: var(--primaryan);
+}
+.text-logo h2 {
+    color: var(--blue);
+}
+.group button {
+    background-color: var(--primaryan);
+}
+.group button:hover {
+    color: var(--primaryan);
+    background-color: white;
+    /* border: var(--primaryan) 1px solid; */
+    transition: 0.5s;
+}
+.hamburger-line {
+    width: 30px;
+    height: 2px;
+    margin-top: 5px;
+    display: block;
+    background-color: #000;
+}
+
+.hamburger-active > span:nth-child(1) {
+    transform: rotate(30deg);
+}
+.hamburger-active > span:nth-child(2) {
+    transform: scale(0);
+}
+.hamburger-active > span:nth-child(3) {
+    transform: rotate(-30deg);
+}
+.group a:hover {
+    color: var(--primaryan) !important;
+}
+.navbar-fixed {
+    position: fixed;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+    box-shadow: inset 0 -2px 0 0 rgba(0, 0, 0, 0.1);
+}
+/* navbar end */
+
+/* hero section start */
+.text-head {
+    color: var(--blue);
+}
+.hero-img img {
+    width: 70%;
+}
+.hero-about img {
+    width: 60%;
+}
+.search {
+    width: 75%;
+    border: 1.5px solid var(--border);
+}
+.search button {
+    background-color: #116e63;
+    font-weight: 500;
+}
+/* hero section end */
+
+/* about start */
+.check-circle a {
+    background-color: #14b8a6;
+}
+.check-circle img {
+    filter: brightness(0) invert(1);
+}
+
+.button-view button {
+    background-color: var(--primaryan);
+}
+.button-view button:hover {
+    transition: 0.5s;
+}
+/* about end */
+
+/* slider card start */
+.button-open button {
+    background-color: var(--button-open);
+} /* slider card end */
+.button-close button {
+    background-color: var(--red);
+}
+
+.btn-floating {
+    position: fixed;
+    right: 30px;
+    overflow: hidden;
+    border-radius: 100%;
+    border: 0;
+    color: black;
+    z-index: 999;
+}
+.btn-floating.whatsapp {
+    width: 60px;
+    height: 60px;
+    bottom: 90px;
+}
+
+/* footer start */
+.text-group {
+    color: var(--blue);
+}
+.input input {
+    border: 1.5px solid var(--border);
+}
+/* footer end */

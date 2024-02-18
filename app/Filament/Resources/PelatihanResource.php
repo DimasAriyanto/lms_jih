@@ -25,10 +25,21 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\QueryBuilder;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator;
+use Filament\Tables\Filters\QueryBuilder\Constraints\SelectConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class PelatihanResource extends Resource
 {
@@ -93,6 +104,7 @@ class PelatihanResource extends Resource
                             // ->timezone('Indonesia/Jakarta')
                             ->required(),
                         TimePicker::make('jam_selesai')
+                            ->native(false)
                             ->required(),
                     ])->columns(2),
 
@@ -115,10 +127,20 @@ class PelatihanResource extends Resource
                             ->required(),
                     ])->columns(2),
 
+                Section::make('Harga')
+                    ->schema([
+                        TextInput::make('harga')
+                            ->numeric()
+                            ->required(),
+                        TextInput::make('diskon')
+                            ->numeric()
+                            ->required(),
+                    ])->columns(2),
+
                 Section::make('Mentor')
                     ->schema([
                         Select::make('user_id')
-                            ->relationship('mentor', 'name')
+                            ->relationship(name: 'mentor', titleAttribute: 'name', modifyQueryUsing: fn (Builder $query) => $query->where('role', 'mentor'))
                             ->native(false)
                             ->preload()
                             ->searchable()
@@ -138,25 +160,41 @@ class PelatihanResource extends Resource
 
                 Section::make('Status Pelaksanaan')
                     ->schema([
+                        Radio::make('status_pendaftaran')
+                            ->options([
+                                'buka' => 'Buka',
+                                'tutup' => 'Tutup',
+                            ]),
+                        Radio::make('status_kuota')
+                            ->options([
+                                'tersedia' => 'Tersedia',
+                                'penuh' => 'Penuh',
+                            ]),
                         Radio::make('status_pelaksanaan')
                             ->options([
                                 'selesai' => 'Selesai',
                                 'proses' => 'Proses',
                                 'batal' => 'Batal',
                             ])
-                            ->hiddenLabel()
-                            ->hiddenOn('create')
-                    ]),
+                    ])
+                    ->hiddenOn('create'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                // 'mentor.nama',
+                Group::make('kategori.nama')
+                    ->collapsible(),
+                Group::make('mentor.name')
+                    ->collapsible(),
+            ])
             ->columns([
-                TextColumn::make('id')
-                    ->sortable(),
+                TextColumn::make('No')->rowIndex(),
                 ImageColumn::make('image_url')
+                    ->square()
                     ->label('Photo'),
                 TextColumn::make('nama')
                     ->sortable()
@@ -164,9 +202,18 @@ class PelatihanResource extends Resource
                     ->translateLabel(),
                 TextColumn::make('mentor.name')
                     ->sortable()
-                    ->searchable()
-                    ->url(fn () => route('filament.admin.auth.profile')),
-                TextColumn::make('tanggal_pelaksanaan'),
+                    ->searchable(),
+                TextColumn::make('tempat_pelaksanaan')
+                    ->toggleable(),
+                TextColumn::make('tanggal_pelaksanaan')
+                    ->dateTime()
+                    ->toggleable(),
+                TextColumn::make('jam_mulai')
+                    ->toggleable(),
+                TextColumn::make('jam_selesai')
+                    ->toggleable(),
+                TextColumn::make('harga')
+                    ->toggleable(),
                 TextColumn::make('status_pelaksanaan')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -176,24 +223,52 @@ class PelatihanResource extends Resource
                     }),
             ])
             ->filters([
-                SelectFilter::make('jenis_kuota')
-                    ->options([
-                        'limited' => 'Limited',
-                        'unlimited' => 'Unlimited'
-                    ]),
-                SelectFilter::make('status_pelaksanaan')
-                    ->options([
-                        'selesai' => 'Selesai',
-                        'proses' => 'Proses',
-                        'batal' => 'Batal'
-                    ]),
-                SelectFilter::make('mentor')
-                    ->preload()
-                    ->relationship('mentor', 'name'),
-                SelectFilter::make('kategori')
-                    ->preload()
-                    ->relationship('kategori', 'nama'),
-            ])
+                QueryBuilder::make()
+                    ->constraints([
+                        TextConstraint::make('nama'),
+                        DateConstraint::make('tanggal_pelaksanaan'),
+                        TextConstraint::make('tempat_pelaksanaan'),
+                        SelectConstraint::make('jenis_pelaksanaan')
+                            ->searchable()
+                            ->options([
+                                'terbatas' => 'Terbatas',
+                                'umum' => 'Umum',
+                            ]),
+                        NumberConstraint::make('harga')
+                            ->icon('heroicon-m-currency-dollar'),
+                        SelectConstraint::make('status_pendaftaran')
+                            ->searchable()
+                            ->options([
+                                'buka' => 'Buka',
+                                'tutup' => 'Tutup',
+                            ]),
+                        SelectConstraint::make('status_kuota')
+                            ->searchable()
+                            ->options([
+                                'tersedia' => 'Tersedia',
+                                'penuh' => 'Penuh',
+                            ]),
+                        SelectConstraint::make('status_pelaksanaan')
+                            ->searchable()
+                            ->options([
+                                'selesai' => 'Selesai',
+                                'proses' => 'Proses',
+                                'batal' => 'Batal',
+                            ]),
+                        RelationshipConstraint::make('kategori') // Filter the `creator` relationship
+                            ->selectable(
+                                IsRelatedToOperator::make()
+                                    ->titleAttribute('nama')
+                                    ->searchable(),
+                            ),
+                        RelationshipConstraint::make('mentor') // Filter the `creator` relationship
+                            ->selectable(
+                                IsRelatedToOperator::make()
+                                    ->titleAttribute('name')
+                                    ->searchable(),
+                            ),
+                    ])
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 ActionGroup::make([
                     ViewAction::make(),

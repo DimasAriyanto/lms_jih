@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('pendaftaran', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pelatihan_id');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('pelatihan_id')->references('id')->on('pelatihan');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->date('tanggal_pendaftaran');
-            $table->enum('status_pembayaran', ['sudah', 'belum'])->default('belum');
+            $table->foreignId('pelatihan_id')->constrained(table: 'pelatihan');
+            $table->foreignId('user_id')->constrained(table: 'users');
+            $table->timestamp('tanggal_pendaftaran')->default(now());
+            $table->timestamp('tanggal_pembayaran')->nullable();
+            $table->float('total_pembayaran')->default(0);
+            $table->string('metode_pembayaran')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

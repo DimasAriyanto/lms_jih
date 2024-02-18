@@ -24,10 +24,12 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class PelatihanResource extends Resource
 {
@@ -151,10 +153,11 @@ class PelatihanResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->sortable(),
+                TextColumn::make('No')
+                    ->rowIndex(),
                 ImageColumn::make('image_url')
-                    ->label('Photo'),
+                    ->label('Photo')
+                    ->square(),
                 TextColumn::make('nama')
                     ->sortable()
                     ->searchable()

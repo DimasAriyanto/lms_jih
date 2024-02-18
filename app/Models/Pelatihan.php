@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pelatihan extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'pelatihan';
 
@@ -29,14 +30,22 @@ class Pelatihan extends Model
         'tanggal_akhir_pendaftaran',
         'harga',
         'diskon',
+        'status_pendaftaran',
+        'status_kuota',
         'status_pelaksanaan',
         'kategori_id',
         'user_id',
     ];
 
+    protected $casts = [
+        'tanggal_pelaksanaan' => 'date',
+        'tanggal_mulai_pendaftaran' => 'datetime',
+        'tanggal_akhir_pendaftaran' => 'datetime',
+    ];
+
     public function kategori(): BelongsTo
     {
-        return $this->belongsTo(Kategori::class, 'katogori_id', 'id');
+        return $this->belongsTo(Kategori::class, 'kategori_id', 'id');
     }
 
     public function mentor(): BelongsTo
@@ -44,9 +53,9 @@ class Pelatihan extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function pendaftaran(): HasOne
+    public function pendaftaran(): HasMany
     {
-        return $this->hasOne(Pendaftaran::class, 'pelatihan_id', 'id');
+        return $this->hasMany(Pendaftaran::class, 'pelatihan_id', 'id');
     }
 
     public function sertifikat(): HasMany

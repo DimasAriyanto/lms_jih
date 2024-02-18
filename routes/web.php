@@ -19,10 +19,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/login', Login::class)->name('auth.login');
-// Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
-Route::get('/course', [PendaftaranController::class, 'create'])->name('course.create');
-Route::post('/course', [PendaftaranController::class, 'store'])->name('course.store')->middleware('auth');
+Route::get('/pendaftaran', [PendaftaranController::class, 'create'])->name('pendaftaran.create');
+Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store')->middleware('auth');

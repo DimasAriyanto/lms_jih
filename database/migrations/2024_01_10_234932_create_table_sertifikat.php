@@ -13,12 +13,10 @@ return new class extends Migration
     {
         Schema::create('sertifikat', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pelatihan_id');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('pelatihan_id')->references('id')->on('pelatihan');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('pelatihan_id')->constrained(table: 'pelatihan');
+            $table->foreignId('user_id')->constrained(table: 'users');
             $table->string('image_url');
-            $table->date('tanggal_terbit');
+            $table->timestamp('tanggal_terbit');
             $table->timestamps();
         });
     }

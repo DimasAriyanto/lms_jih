@@ -16,13 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('image_url')->nullable();
             $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('alamat')->nullable();
             $table->string('no_hp')->nullable();
             $table->enum('role', ['umum', 'pegawai', 'mentor', 'admin'])->default('pegawai');
             $table->string('password');
-            $table->boolean('is_verified')->default(false);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -6,9 +6,11 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class PendaftaranRelationManager extends RelationManager
 {
@@ -29,18 +31,30 @@ class PendaftaranRelationManager extends RelationManager
         return $table
             // ->recordTitleAttribute('tanggal_pendaftaran')
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->sortable()
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('No')->state(
+                    static function (HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 Tables\Columns\TextColumn::make('peserta.name')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal_pendaftaran')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status_pembayaran')
-                    ->sortable()
-                    ->searchable(),
+                Tables\Columns\IconColumn::make('tanggal_pembayaran')
+                    ->label('Status Pembayaran')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-badge')
+                    ->falseIcon('heroicon-o-x-mark')
+                    ->default(0),
+                Tables\Columns\TextColumn::make('tanggal_pembayaran'),
+                Tables\Columns\TextColumn::make('metode_pembayaran'),
             ])
             ->filters([
                 //
@@ -49,7 +63,7 @@ class PendaftaranRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -18,6 +18,10 @@ class Sertifikat extends Model
         'tanggal_terbit',
     ];
 
+    protected $casts = [
+        'tanggal_terbit' => 'datetime',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
