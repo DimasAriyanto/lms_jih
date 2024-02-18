@@ -1,2 +1,4 @@
 [14-Jan-2024 15:52:31 Asia/Jakarta] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
 [14-Jan-2024 15:52:55 Asia/Jakarta] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[24-Jan-2024 11:22:03 Asia/Jakarta] PHP Deprecated:  Directive 'allow_url_include' is deprecated in Unknown on line 0
+[24-Jan-2024 11:22:03 Asia/Jakarta] PHP Fatal error:  Composer detected issues in your platform: Your Composer dependencies require a PHP version ">= 8.1.2". You are running 7.4.33. in /home1/manbantu/lms.man1bantulprogress.id/lms_jih/vendor/composer/platform_check.php on line 28
