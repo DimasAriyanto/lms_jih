@@ -24,11 +24,13 @@ use Filament\Tables;
 use Filament\Tables\Columns\CheckboxColumn;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -112,16 +114,7 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('No')->state(
-                    static function (HasTable $livewire, stdClass $rowLoop): string {
-                        return (string) (
-                            $rowLoop->iteration +
-                            ($livewire->getTableRecordsPerPage() * (
-                                $livewire->getTablePage() - 1
-                            ))
-                        );
-                    }
-                ),
+                TextColumn::make('No')->rowIndex(),
                 ImageColumn::make('image_url')
                     ->label('Photo')
                     // ->width(100)
@@ -131,15 +124,35 @@ class UserResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->translateLabel(),
+                // Stack::make([
                 TextColumn::make('email')
-                    ->icon('heroicon-m-envelope'),
+                    ->copyable()
+                    ->copyMessage('Email address copied')
+                    ->copyMessageDuration(1500)
+                    ->icon('heroicon-m-envelope')
+                    ->toggleable(),
+                TextColumn::make('no_hp')
+                    ->label('Nomer Telepon')
+                    ->copyable()
+                    ->copyMessage('Nomer Telepon copied')
+                    ->copyMessageDuration(1500)
+                    ->icon('heroicon-m-phone')
+                    ->toggleable(),
+                // ]),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->label('Waktu mendaftar')
+                    ->toggleable(),
                 IconColumn::make('email_verified_at')
-                    ->label('Verified')
+                    ->label('Status Verifikasi')
                     ->boolean()
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-x-mark')
-                    ->default(0),
+                    ->default(0)
+                    ->toggleable(),
                 TextColumn::make('role')
+                    ->toggleable(),
             ])
             ->filters([
                 SelectFilter::make('role')
@@ -148,8 +161,12 @@ class UserResource extends Resource
                         'mentor' => 'Mentor',
                         'pegawai' => 'Pegawai',
                     ]),
-                Filter::make('is_verified')
-                // ->query(fn (Builder $query): Builder => $query->whereNotNull('is_verified')),
+                TernaryFilter::make('email_verified_at')
+                    ->label('Email verification')
+                    ->nullable()
+                    ->placeholder('All users')
+                    ->trueLabel('Verified users')
+                    ->falseLabel('Not verified users')
             ])
             ->actions([
                 ActionGroup::make([
@@ -193,19 +210,13 @@ class UserResource extends Resource
             ->body('The user has been created successfully.');
     }
 
-    // public function getTabs(): array
-    // {
-    //     return [
-    //         'all' => Tab::make(),
-    //         'active' => Tab::make()
-    //             ->modifyQueryUsing(fn (Builder $query) => $query->where('is_verified', true)),
-    //         'inactive' => Tab::make()
-    //             ->modifyQueryUsing(fn (Builder $query) => $query->where('is_verified', false)),
-    //     ];
-    // }
-
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email', 'no_hp', 'alamat', 'role'];
     }
 }

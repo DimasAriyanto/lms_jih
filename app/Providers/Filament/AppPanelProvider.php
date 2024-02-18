@@ -30,6 +30,7 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('app')
+            ->databaseNotifications()
             ->colors([
                 'primary' => Color::Amber,
             ])

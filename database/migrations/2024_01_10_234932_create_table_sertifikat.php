@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('pelatihan_id')->constrained(table: 'pelatihan');
             $table->foreignId('user_id')->constrained(table: 'users');
             $table->string('image_url');
-            $table->date('tanggal_terbit');
+            $table->timestamp('tanggal_terbit');
             $table->timestamps();
         });
     }

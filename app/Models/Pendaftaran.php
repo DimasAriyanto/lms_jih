@@ -18,7 +18,14 @@ class Pendaftaran extends Model
         'user_id',
         'tanggal_pendaftaran',
         'tanggal_pembayaran',
+        'total_pembayaran',
         'metode_pembayaran',
+    ];
+
+    protected $casts = [
+        'tanggal_pendaftaran' => 'datetime',
+        'tanggal_pembayaran' => 'datetime',
+        'total_pembayaran' => 'float',
     ];
 
     public function peserta(): BelongsTo

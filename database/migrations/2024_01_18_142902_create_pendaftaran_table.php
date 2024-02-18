@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pelatihan_id')->constrained(table: 'pelatihan');
             $table->foreignId('user_id')->constrained(table: 'users');
-            $table->date('tanggal_pendaftaran')->default(now());
-            $table->date('tanggal_pembayaran')->nullable();
+            $table->timestamp('tanggal_pendaftaran')->default(now());
+            $table->timestamp('tanggal_pembayaran')->nullable();
+            $table->float('total_pembayaran')->default(0);
             $table->string('metode_pembayaran')->nullable();
             $table->timestamps();
             $table->softDeletes();

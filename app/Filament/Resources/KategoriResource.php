@@ -27,6 +27,8 @@ class KategoriResource extends Resource
 
     protected static ?string $navigationGroup = 'Management Pelatihan';
 
+    protected static ?string $recordTitleAttribute = 'nama';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -41,16 +43,7 @@ class KategoriResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('No')->state(
-                    static function (HasTable $livewire, stdClass $rowLoop): string {
-                        return (string) (
-                            $rowLoop->iteration +
-                            ($livewire->getTableRecordsPerPage() * (
-                                $livewire->getTablePage() - 1
-                            ))
-                        );
-                    }
-                ),
+                TextColumn::make('No')->rowIndex(),
                 TextColumn::make('nama')
                     ->sortable()
                     ->searchable()
@@ -91,5 +84,10 @@ class KategoriResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['nama'];
     }
 }
