@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('alamat')->nullable();
             $table->string('no_hp')->nullable();
-            $table->enum('role', ['umum', 'pegawai', 'mentor', 'admin'])->default('pegawai');
+            $table->enum('role', ['umum', 'pegawai', 'mentor', 'admin']);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
