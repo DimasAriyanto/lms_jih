@@ -15,12 +15,14 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
@@ -47,7 +49,7 @@ class PelatihanResource extends Resource
 
     protected static ?string $navigationLabel = 'Pelatihan';
 
-    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
     protected static ?string $navigationGroup = 'Management Pelatihan';
 
@@ -55,7 +57,7 @@ class PelatihanResource extends Resource
     {
         return $form
             ->schema([
-                Section::make()
+                Section::make('Detail Pelatihan')
                     ->schema([
                         TextInput::make('nama')
                             ->required(),
@@ -69,15 +71,15 @@ class PelatihanResource extends Resource
                                     ->required(),
                             ])
                             ->required(),
-                        Textarea::make('deskripsi')
+                        RichEditor::make('deskripsi')
                             ->columnSpan('full')
                             ->required(),
                     ])->columns(2),
 
-                Section::make('Image')
+                Section::make('Aset Pelatihan')
                     ->schema([
                         FileUpload::make('image_url')
-                            ->hiddenLabel()
+                            ->label('Cover pelatihan')
                             ->image()
                             ->imageEditor()
                             ->imageEditorAspectRatios([
@@ -85,18 +87,38 @@ class PelatihanResource extends Resource
                                 '4:3',
                                 '1:1',
                             ])
-                            ->directory('uploads')
+                            ->directory('images')
                             ->visibility('public')
                             ->openable()
                             ->downloadable()
                             ->maxSize(10240)
                             ->required(),
-                    ]),
+
+                        FileUpload::make('modul_pelatihan')
+                            ->directory('files')
+                            ->visibility('public')
+                            ->openable()
+                            ->downloadable()
+                            ->maxSize(30720)
+                            ->required(),
+                    ])->columns(2),
 
                 Section::make('Waktu dan Tempat Pelaksanaan')
                     ->schema([
+                        Radio::make('tipe_pelaksanaan')
+                            ->options([
+                                'offline' => 'Offline',
+                                'online' => 'Online',
+                            ])
+                            ->inline()
+                            ->columnSpan('full')
+                            ->default('offline')
+                            ->live(),
                         TextInput::make('tempat_pelaksanaan')
-                            ->required(),
+                            ->hidden(fn (Get $get) => $get('tipe_pelaksanaan') !== 'offline'),
+                        TextInput::make('link_online')
+                            ->label('Link Zoom/Meet')
+                            ->hidden(fn (Get $get) => $get('tipe_pelaksanaan') !== 'online'),
                         DatePicker::make('tanggal_pelaksanaan')
                             ->native(false)
                             ->required(),
@@ -104,7 +126,7 @@ class PelatihanResource extends Resource
                             // ->timezone('Indonesia/Jakarta')
                             ->required(),
                         TimePicker::make('jam_selesai')
-                            ->native(false)
+                            // ->native(false)
                             ->required(),
                     ])->columns(2),
 
@@ -127,12 +149,14 @@ class PelatihanResource extends Resource
                             ->required(),
                     ])->columns(2),
 
-                Section::make('Harga')
+                Section::make('Biaya Pelatihan')
                     ->schema([
                         TextInput::make('harga')
+                            ->prefix('Rp')
                             ->numeric()
                             ->required(),
                         TextInput::make('diskon')
+                            ->suffix('%')
                             ->numeric()
                             ->required(),
                     ])->columns(2),
@@ -161,16 +185,19 @@ class PelatihanResource extends Resource
                 Section::make('Status Pelaksanaan')
                     ->schema([
                         Radio::make('status_pendaftaran')
+                            ->inline()
                             ->options([
                                 'buka' => 'Buka',
                                 'tutup' => 'Tutup',
                             ]),
                         Radio::make('status_kuota')
+                            ->inline()
                             ->options([
                                 'tersedia' => 'Tersedia',
                                 'penuh' => 'Penuh',
                             ]),
                         Radio::make('status_pelaksanaan')
+                            ->inline()
                             ->options([
                                 'selesai' => 'Selesai',
                                 'proses' => 'Proses',

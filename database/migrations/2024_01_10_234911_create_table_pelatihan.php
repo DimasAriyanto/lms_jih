@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('modul_pelatihan');
             $table->date('tanggal_pelaksanaan');
             $table->enum('tipe_pelaksanaan', ['online', 'offline']);
-            $table->text('tempat_pelaksanaan');
+            $table->string('link_online')->nullable();
+            $table->text('tempat_pelaksanaan')->nullable();
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->enum('jenis_pelaksanaan', ['terbatas', 'umum']);

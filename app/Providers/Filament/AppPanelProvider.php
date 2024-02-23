@@ -42,7 +42,7 @@ class AppPanelProvider extends PanelProvider
             ->userMenuItems([
                 MenuItem::make()
                     ->label('Landing Page')
-                    ->icon('heroicon-m-home')
+                    ->icon('heroicon-m-globe-alt')
                     ->url('/')
             ])
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')

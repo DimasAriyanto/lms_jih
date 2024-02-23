@@ -74,6 +74,21 @@ class User extends Authenticatable implements HasMedia, FilamentUser, MustVerify
         return $this->hasMany(Pendaftaran::class, 'user_id', 'id');
     }
 
+    public function feedback(): HasMany
+    {
+        return $this->hasMany(Feedback::class, 'user_id', 'id');
+    }
+
+    public function wishlist(): HasMany
+    {
+        return $this->hasMany(Wishlist::class, 'user_id', 'id');
+    }
+
+    public function cart(): HasMany
+    {
+        return $this->hasMany(Cart::class, 'user_id', 'id');
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this

@@ -20,8 +20,11 @@ class Pelatihan extends Model
         'nama',
         'deskripsi',
         'image_url',
+        'modul_pelatihan',
         'tanggal_pelaksanaan',
+        'tipe_pelaksanaan',
         'tempat_pelaksanaan',
+        'link_online',
         'jam_mulai',
         'jam_selesai',
         'jenis_pelaksanaan',
@@ -38,7 +41,7 @@ class Pelatihan extends Model
     ];
 
     protected $casts = [
-        'tanggal_pelaksanaan' => 'date',
+        // 'tanggal_pelaksanaan' => 'date:Y-m-d',
         'tanggal_mulai_pendaftaran' => 'datetime',
         'tanggal_akhir_pendaftaran' => 'datetime',
     ];
@@ -61,5 +64,15 @@ class Pelatihan extends Model
     public function sertifikat(): HasMany
     {
         return $this->hasMany(Sertifikat::class, 'pelatihan_id', 'id');
+    }
+
+    public function wishlist(): HasMany
+    {
+        return $this->hasMany(Wishlist::class, 'pelatihan_id', 'id');
+    }
+
+    public function cart(): HasMany
+    {
+        return $this->hasMany(Cart::class, 'pelatihan_id', 'id');
     }
 }

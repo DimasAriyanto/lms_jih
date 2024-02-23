@@ -20,12 +20,22 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\QueryBuilder;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator;
+use Filament\Tables\Filters\QueryBuilder\Constraints\SelectConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -37,13 +47,13 @@ class PelatihanResource extends Resource
 
     protected static ?string $navigationLabel = 'Pelatihan';
 
-    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make()
+                Section::make('Deskripsi Pelatihan')
                     ->schema([
                         TextInput::make('nama')
                             ->required(),
@@ -62,10 +72,10 @@ class PelatihanResource extends Resource
                             ->required(),
                     ])->columns(2),
 
-                Section::make('Image')
+                Section::make('Aset Pelatihan')
                     ->schema([
                         FileUpload::make('image_url')
-                            ->hiddenLabel()
+                            ->label('Cover pelatihan')
                             ->image()
                             ->imageEditor()
                             ->imageEditorAspectRatios([
@@ -73,18 +83,38 @@ class PelatihanResource extends Resource
                                 '4:3',
                                 '1:1',
                             ])
-                            ->directory('uploads')
+                            ->directory('images')
                             ->visibility('public')
                             ->openable()
                             ->downloadable()
                             ->maxSize(10240)
                             ->required(),
-                    ]),
+
+                        FileUpload::make('modul_pelatihan')
+                            ->directory('files')
+                            ->visibility('public')
+                            ->openable()
+                            ->downloadable()
+                            ->maxSize(30720)
+                            ->required(),
+                    ])->columns(2),
 
                 Section::make('Waktu dan Tempat Pelaksanaan')
                     ->schema([
+                        Radio::make('tipe_pelaksanaan')
+                            ->options([
+                                'offline' => 'Offline',
+                                'online' => 'Online',
+                            ])
+                            ->inline()
+                            ->columnSpan('full')
+                            ->default('offline')
+                            ->live(),
                         TextInput::make('tempat_pelaksanaan')
-                            ->required(),
+                            ->hidden(fn (Get $get) => $get('tipe_pelaksanaan') !== 'offline'),
+                        TextInput::make('link_online')
+                            ->label('Link Zoom/Meet')
+                            ->hidden(fn (Get $get) => $get('tipe_pelaksanaan') !== 'online'),
                         DatePicker::make('tanggal_pelaksanaan')
                             ->native(false)
                             ->required(),
@@ -92,6 +122,7 @@ class PelatihanResource extends Resource
                             // ->timezone('Indonesia/Jakarta')
                             ->required(),
                         TimePicker::make('jam_selesai')
+                            // ->native(false)
                             ->required(),
                     ])->columns(2),
 
@@ -111,6 +142,18 @@ class PelatihanResource extends Resource
                             ->required(),
                         DatePicker::make('tanggal_akhir_pendaftaran')
                             ->native(false)
+                            ->required(),
+                    ])->columns(2),
+
+                Section::make('Biaya Pelatihan')
+                    ->schema([
+                        TextInput::make('harga')
+                            ->prefix('Rp')
+                            ->numeric()
+                            ->required(),
+                        TextInput::make('diskon')
+                            ->suffix('%')
+                            ->numeric()
                             ->required(),
                     ])->columns(2),
 
@@ -137,14 +180,25 @@ class PelatihanResource extends Resource
 
                 Section::make('Status Pelaksanaan')
                     ->schema([
+                        Radio::make('status_pendaftaran')
+                            ->inline()
+                            ->options([
+                                'buka' => 'Buka',
+                                'tutup' => 'Tutup',
+                            ]),
+                        Radio::make('status_kuota')
+                            ->inline()
+                            ->options([
+                                'tersedia' => 'Tersedia',
+                                'penuh' => 'Penuh',
+                            ]),
                         Radio::make('status_pelaksanaan')
+                            ->inline()
                             ->options([
                                 'selesai' => 'Selesai',
                                 'proses' => 'Proses',
                                 'batal' => 'Batal',
                             ])
-                            ->hiddenLabel()
-                            ->hiddenOn('create')
                     ]),
             ]);
     }
@@ -152,21 +206,36 @@ class PelatihanResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->groups([
+                // 'mentor.nama',
+                Group::make('kategori.nama')
+                    ->collapsible(),
+                Group::make('mentor.name')
+                    ->collapsible(),
+            ])
             ->columns([
-                TextColumn::make('No')
-                    ->rowIndex(),
+                TextColumn::make('No')->rowIndex(),
                 ImageColumn::make('image_url')
-                    ->label('Photo')
-                    ->square(),
+                    ->square()
+                    ->label('Photo'),
                 TextColumn::make('nama')
                     ->sortable()
                     ->searchable()
                     ->translateLabel(),
                 TextColumn::make('mentor.name')
                     ->sortable()
-                    ->searchable()
-                    ->url(fn () => route('filament.admin.auth.profile')),
-                TextColumn::make('tanggal_pelaksanaan'),
+                    ->searchable(),
+                TextColumn::make('tempat_pelaksanaan')
+                    ->toggleable(),
+                TextColumn::make('tanggal_pelaksanaan')
+                    ->dateTime()
+                    ->toggleable(),
+                TextColumn::make('jam_mulai')
+                    ->toggleable(),
+                TextColumn::make('jam_selesai')
+                    ->toggleable(),
+                TextColumn::make('harga')
+                    ->toggleable(),
                 TextColumn::make('status_pelaksanaan')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -176,35 +245,63 @@ class PelatihanResource extends Resource
                     }),
             ])
             ->filters([
-                SelectFilter::make('jenis_kuota')
-                    ->options([
-                        'limited' => 'Limited',
-                        'unlimited' => 'Unlimited'
-                    ]),
-                SelectFilter::make('status_pelaksanaan')
-                    ->options([
-                        'selesai' => 'Selesai',
-                        'proses' => 'Proses',
-                        'batal' => 'Batal'
-                    ]),
-                SelectFilter::make('mentor')
-                    ->preload()
-                    ->relationship('mentor', 'name'),
-                SelectFilter::make('kategori')
-                    ->preload()
-                    ->relationship('kategori', 'nama'),
-            ])
+                QueryBuilder::make()
+                    ->constraints([
+                        TextConstraint::make('nama'),
+                        DateConstraint::make('tanggal_pelaksanaan'),
+                        TextConstraint::make('tempat_pelaksanaan'),
+                        SelectConstraint::make('jenis_pelaksanaan')
+                            ->searchable()
+                            ->options([
+                                'terbatas' => 'Terbatas',
+                                'umum' => 'Umum',
+                            ]),
+                        NumberConstraint::make('harga')
+                            ->icon('heroicon-m-currency-dollar'),
+                        SelectConstraint::make('status_pendaftaran')
+                            ->searchable()
+                            ->options([
+                                'buka' => 'Buka',
+                                'tutup' => 'Tutup',
+                            ]),
+                        SelectConstraint::make('status_kuota')
+                            ->searchable()
+                            ->options([
+                                'tersedia' => 'Tersedia',
+                                'penuh' => 'Penuh',
+                            ]),
+                        SelectConstraint::make('status_pelaksanaan')
+                            ->searchable()
+                            ->options([
+                                'selesai' => 'Selesai',
+                                'proses' => 'Proses',
+                                'batal' => 'Batal',
+                            ]),
+                        RelationshipConstraint::make('kategori') // Filter the `creator` relationship
+                            ->selectable(
+                                IsRelatedToOperator::make()
+                                    ->titleAttribute('nama')
+                                    ->searchable(),
+                            ),
+                        RelationshipConstraint::make('mentor') // Filter the `creator` relationship
+                            ->selectable(
+                                IsRelatedToOperator::make()
+                                    ->titleAttribute('name')
+                                    ->searchable(),
+                            ),
+                    ])
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 // ActionGroup::make([
-                //     ViewAction::make(),
-                //     EditAction::make(),
-                //     DeleteAction::make(),
+                    // ViewAction::make(),
+                    // EditAction::make(),
+                    // DeleteAction::make(),
                 // ])->tooltip('Actions')
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 

@@ -7,7 +7,7 @@
                     <div class="grid md:grid-cols-12 grid-cols-1 gap-[30px]">
                         <div class="lg:col-span-4 md:col-span-12">
                             <a href="#logo" class="flex">
-                                <img src="{{asset('images/logo.png')}}" alt="">
+                                <img src="{{ asset('images/logo.png') }}" alt="">
                                 <div class="text-logo">
                                     <h1 class="text-3xl py-1 px-4 font-bold">JIH</h1>
                                     <h2 class="text-2xl px-4 font-bold">Academy</h2>
@@ -128,34 +128,18 @@
                                 Contact
                             </h5>
                             <div class="flex">
-                                <img src="{{asset('images/phone.svg')}}" alt="" class="w-5 mt-6">
+                                <img src="{{ asset('images/phone.svg') }}" alt="" class="w-5 mt-6">
                                 <p class="mt-6 px-2">
                                     +628-423-675-19
                                 </p>
                             </div>
                             <div class="flex">
-                                <img src="{{asset('images/mail.svg')}}" alt="" class="w-5 mt-6">
+                                <img src="{{ asset('images/mail.svg') }}" alt="" class="w-5 mt-6">
                                 <p class="mt-6 px-2">
                                     LMSJIH@gmail.com
                                 </p>
                             </div>
-                            <form>
-                                <div class="grid grid-cols-1">
-                                    <div class=" my-3">
-                                        <label class="form-label font-medium">Write your Feedback
-                                            <span class="text-red-600">😁</span></label>
-                                        <div class="relative mt-2 input">
-                                            <textarea
-                                                class="w-full py-2 px-3 h-20 outline-none bg-white rounded-lg text-gray-900 focus:shadow-none"
-                                                placeholder="Teks Anda" name="teks" required></textarea>
-                                        </div>
-                                    </div>
-                                    <button type="submit" id="submitsubscribe" name="send"
-                                        class="py-2 px-5 inline-block font-medium hover:bg-white  hover:text-[#116e63] tracking-wide border align-middle transition duration-100 ease-in-out text-base text-center bg-[#116e63] text-white rounded-2xl">
-                                        Kirim
-                                    </button>
-                                </div>
-                            </form>
+                            <livewire:create-feedback />
                         </div>
                         <!--end col-->
                     </div>

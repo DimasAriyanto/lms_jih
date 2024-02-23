@@ -33,7 +33,7 @@ class PendaftaranResource extends Resource
 
     protected static ?string $navigationLabel = 'Pendaftaran';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-pencil';
 
     protected static ?string $navigationGroup = 'Management Pelatihan';
 

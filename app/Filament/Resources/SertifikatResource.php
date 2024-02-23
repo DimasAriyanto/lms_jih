@@ -22,7 +22,7 @@ class SertifikatResource extends Resource
 
     protected static ?string $navigationLabel = 'Sertifikat';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $navigationGroup = 'Management Pelatihan';
 

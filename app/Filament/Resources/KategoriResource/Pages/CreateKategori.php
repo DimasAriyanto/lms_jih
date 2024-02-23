@@ -19,20 +19,20 @@ class CreateKategori extends CreateRecord
         /** @var Order $order */
         $order = $this->record;
 
-        /** @var User $user */
-        $mentor = User::where('role', 'mentor')->get();
-        $peserta = User::where('role', 'pegawai')->orWhere('role', 'umum')->get();
+        // /** @var User $user */
+        // $mentor = User::where('role', 'mentor')->get();
+        // $peserta = User::where('role', 'pegawai')->orWhere('role', 'umum')->get();
 
-        Notification::make()
-            ->title('Anda memiliki jadwal pelatihan baru')
-            ->icon('heroicon-o-shopping-bag')
-            ->sendToDatabase($mentor);
+        // Notification::make()
+        //     ->title('Anda memiliki jadwal pelatihan baru')
+        //     ->icon('heroicon-o-shopping-bag')
+        //     ->sendToDatabase($mentor);
 
-        Notification::make()
-            ->title('Mari ikuti pelatihan baru')
-            ->icon('heroicon-o-shopping-bag')
-            ->sendToDatabase($peserta);
+        // Notification::make()
+        //     ->title('Mari ikuti pelatihan baru')
+        //     ->icon('heroicon-o-shopping-bag')
+        //     ->sendToDatabase($peserta);
 
-        FacadesNotification::send($mentor, new PelatihanNotification());
+        // FacadesNotification::send($mentor, new PelatihanNotification());
     }
 }
