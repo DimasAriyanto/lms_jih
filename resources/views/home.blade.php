@@ -88,7 +88,7 @@
                 <div class="flex gap-4">
                     <div
                         class="box-border text-white rounded-bl-3xl text-center rounded-tr-3xl h-23 w-32  bg-[#116E63]">
-                        <h1 class="pt-8 font-semibold text-3xl"></h1>
+                        <h1 class="pt-8 font-semibold text-3xl">2000</h1>
                         <p class="font-medium pt-2">User</p>
                     </div>
                     <div class="box-border text-white rounded-bl-3xl rounded-tr-3xl text-center h-32 w-32 bg-[#133781]">

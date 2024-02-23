@@ -11,22 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PendaftaranController extends Controller
 {
-    public function create()
-    {
-        $pelatihan = Pelatihan::all();
-
-        $pelatihan->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'nama' => $item->nama,
-                'image_url' => Storage::url($item->image_url),
-                'deskripsi' => $item->deskripsi,
-                'harga' => $item->harga,
-            ];
-        });
-        return view('pendaftaran', compact('pelatihan'));
-    }
-
     public function store(Request $request)
     {
         try {
