@@ -25,7 +25,7 @@ class PelatihanController extends Controller
                 'harga' => $item->harga,
             ];
         });
-        return view('pendaftaran', compact('data_pelatihan'));
+        return view('pelatihan', compact('data_pelatihan'));
     }
 
     public function show(Pelatihan $pelatihan)
