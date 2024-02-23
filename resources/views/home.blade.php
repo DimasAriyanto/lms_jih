@@ -101,7 +101,7 @@
                     <div class="pt-4">
                         <a href="#">
                             <button
-                                class="btn rounded-2xl bg-[#116e63] px-8 py-2 text-base text-white font-semibold hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out ">Learn
+                                class="btn rounded-2xl bg-[#116e63] px-8 py-2 text-base text-white font-semibold hover:shadow-lg hover:opacity-90 transition duration-300 ease-in-out ">Learn
                                 more</button>
                         </a>
                     </div>

@@ -43,9 +43,9 @@
                                     ">Masuk</button>
                             </a>
                         </li>
-                        <li>
+                        <li class="daftar">
                             <a href="{{ route('filament.app.auth.register') }}">
-                                <button class="btn rounded-2xl px-6 py-2  text-white">Daftar</button>
+                                <button class="btn rounded-2xl px-6 py-2 text-white bg-[#116e63]">Daftar</button>
                             </a>
                         </li>
                     </div>

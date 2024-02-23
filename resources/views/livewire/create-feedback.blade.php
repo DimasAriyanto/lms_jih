@@ -15,7 +15,7 @@
             </div>
         </div>
         <button type="submit" id="submitsubscribe" name="send"
-            class="py-2 px-5 inline-block font-medium hover:bg-white  hover:text-[#116e63] tracking-wide border align-middle transition duration-100 ease-in-out text-base text-center bg-[#116e63] text-white rounded-2xl">
+            class="py-2 px-5 inline-block font-medium hover:opacity-90 hover:shadow-lg hover:text-whitetracking-wide border align-middle transition duration-300 ease-in-out text-base text-center bg-[#116e63] text-white rounded-2xl">
             Kirim
         </button>
     </div>
