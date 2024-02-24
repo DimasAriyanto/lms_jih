@@ -21,7 +21,7 @@ class HomeController extends Controller
             return [
                 'id' => $item->id,
                 'nama' => $item->nama,
-                'image_url' => Storage::url($item->image_url),
+                'image_url' => $item->image_url,
                 'status_pendaftaran' => $item->status_pendaftaran,
                 'tempat_pelaksanaan' => $item->tempat_pelaksanaan ?? $item->link_online,
                 'tanggal_pelaksanaan' => $item->tanggal_pelaksanaan,
@@ -30,9 +30,6 @@ class HomeController extends Controller
                 'harga' => $item->harga,
             ];
         });
-
-        // dd($data_pelatihan);
-
 
         return view('home', compact('jumlah_pelatihan', 'jumlah_pendaftar', 'jumlah_mentor', 'data_pelatihan'));
     }
