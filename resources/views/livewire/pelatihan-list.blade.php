@@ -57,8 +57,8 @@
         <!-- search end -->
         <div class="grid gap-4 md:grid-cols-2">
             @foreach ($this->pelatihan as $pelatihan)
-                <div wire:key="{{ $pelatihan->id }} class="card">
-                    <img src="{{ $pelatihan->image_url }}" alt="" class="rounded-t-2xl w-full">
+                <div wire:key="{{ $pelatihan['id'] }} class="card">
+                    <img src="{{ $pelatihan->getThumbnailUrl() }}" alt="" class="rounded-t-2xl w-full">
                     <div class="card-body px-3 py-5 w-full bg-white">
                         <div class="flex">
                             <h2 class="card-title self-start">{{ $pelatihan['nama'] }}</h2>

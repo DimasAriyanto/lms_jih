@@ -118,7 +118,7 @@ class UserResource extends Resource
                 ImageColumn::make('image_url')
                     ->label('Photo')
                     // ->width(100)
-                    ->defaultImageUrl(url('images/default.jpg'))
+                    ->defaultImageUrl(url('images/default-profile.jpg'))
                     ->circular(true),
                 TextColumn::make('name')
                     ->sortable()

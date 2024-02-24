@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Pelatihan extends Model
 {
@@ -74,5 +75,12 @@ class Pelatihan extends Model
     public function cart(): HasMany
     {
         return $this->hasMany(Cart::class, 'pelatihan_id', 'id');
+    }
+
+    public function getThumbnailUrl()
+    {
+        $isUrl = str_contains($this->image_url, 'http');
+
+        return ($isUrl) ? $this->image_url : Storage::disk('public')->url($this->image_url);
     }
 }
