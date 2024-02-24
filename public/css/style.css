@@ -28,14 +28,18 @@ html {
     color: var(--blue);
 }
 .masuk button {
-    background-color: var(--primaryan);
+    color: black;
+    border-radius: 17px;
+    border: 1px solid var(--border);
+}
+.daftar button {
     color: white;
     border-radius: 17px;
 }
 .masuk button:hover {
-    background-color: white;
+    background-color: var(--primaryan);
     transition: 0.2s;
-    color: black;
+    color: white;
 }
 .hamburger-line {
     width: 30px;

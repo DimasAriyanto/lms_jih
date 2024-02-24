@@ -25,15 +25,14 @@
                     </li>
                     <li>
                         <a href="{{ route('pelatihan.index') }}"
-                        class="mx-8 flex py-2 text-base text-dark">Pelatihan</a>
+                            class="mx-8 flex py-2 text-base text-dark">Pelatihan</a>
                     </li>
                     <li>
                         <a href="{{ route('tentang.kami') }}" class="mx-8 flex py-2 text-base text-dark ">Tentang
                             Kami</a>
                     </li>
                     <li>
-                        <a href="{{ route('kontak') }}"
-                            class="mx-8 flex py-2 text-base text-dark">Contact</a>
+                        <a href="{{ route('kontak') }}" class="mx-8 flex py-2 text-base text-dark">Contact</a>
                     </li>
                     @guest
                         <div class="flex self-end gap-4 mx-8 masuk">
@@ -44,9 +43,9 @@
                                     ">Masuk</button>
                                 </a>
                             </li>
-                            <li>
+                            <li class="daftar">
                                 <a href="{{ route('filament.app.auth.register') }}">
-                                    <button class="btn rounded-2xl px-6 py-2  text-white">Daftar</button>
+                                    <button class="btn rounded-2xl px-6 py-2 text-white bg-[#116e63]">Daftar</button>
                                 </a>
                             </li>
                         </div>

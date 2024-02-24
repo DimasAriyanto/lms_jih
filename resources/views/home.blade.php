@@ -48,7 +48,8 @@
             <div class="relative bottom-44 ">
                 <div class="absolute flex lg:gap-40 w-full justify-center user">
                     <div class="box-border text-[#133781] shadow-lg text-center rounded-3xl h-28 w-40 bg-white ">
-                        <h1 class="pt-6 font-semibold text-[#133781] lg:text-3xl sm:text-lg">{{ $jumlah_pelatihan }}</h1>
+                        <h1 class="pt-6 font-semibold text-[#133781] lg:text-3xl sm:text-lg">{{ $jumlah_pelatihan }}
+                        </h1>
                         <p class="font-medium pt-2 text-base text-[#133781]">Pelatihan</p>
                     </div>
                     <div class="box-border text-[#133781] shadow-lg rounded-3xl text-center h-28 w-40 bg-white ">
@@ -56,7 +57,8 @@
                         <p class="font-medium text-base pt-2 text-[#133781]">Mentor</p>
                     </div>
                     <div class="box-border text-[#133781] shadow-lg rounded-3xl text-center h-28 w-40 bg-white ">
-                        <h1 class="pt-6 font-semibold text-[#133781] lg:text-3xl sm:text-base">{{ $jumlah_pendaftar }}</h1>
+                        <h1 class="pt-6 font-semibold text-[#133781] lg:text-3xl sm:text-base">{{ $jumlah_pendaftar }}
+                        </h1>
                         <p class="font-medium text-base pt-2 text-[#133781]">Pendaftar</p>
                     </div>
                 </div>
@@ -103,7 +105,7 @@
                         <div class="pt-4">
                             <a href="#">
                                 <button
-                                    class="btn rounded-2xl bg-[#116e63] px-8 py-2 text-base text-white font-semibold hover:shadow-lg hover:opacity-80 transition duration-300 ease-in-out ">Learn
+                                    class="btn rounded-2xl bg-[#116e63] px-8 py-2 text-base text-white font-semibold hover:shadow-lg hover:opacity-90 transition duration-300 ease-in-out ">Learn
                                     more</button>
                             </a>
                         </div>
