@@ -2,20 +2,20 @@
     <div class="lg:w-4/12 h-fit flex gap-8 flex-col bg-white shadow-sm rounded-2xl p-8 mt-5">
         <div class="space-y-4">
             <h1 class="text-2xl font-semibold">Kelas</h1>
-            {{-- <div class="flex items-center">
+            <div class="flex items-center">
                 <form action="#" class="">
                     <p class="flex">
-                        <input type="checkbox" value="terbatas" id="test1" name="radio-group">
+                        <input wire:model.live.debounce.250ms="jenisPelaksanaan" type="radio" value="terbatas" id="test1" name="radio-group">
                         <label for="test1" class="pt-1 text-md font-semibold text-black">Karyawan</label>
                     </p>
                     <p class="pt-4">
-                        <input type="checkbox" value="umum" id="test2" name="radio-group">
+                        <input wire:model.live.debounce.250ms="jenisPelaksanaan" type="radio" value="umum" id="test2" name="radio-group">
                         <label for="test2" class="pt-1 text-md font-semibold text-black">Umum</label>
                     </p>
                 </form>
-            </div> --}}
+            </div>
 
-            <div class="flex items-center mb-4">
+            {{-- <div class="flex items-center mb-4">
                 <input wire:model.live.debounce.250ms="jenisPelaksanaan" value="terbatas" id="default-checkbox"
                     type="checkbox"
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -28,7 +28,7 @@
                     class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                 <label for="default-checkbox"
                     class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Umum</label>
-            </div>
+            </div> --}}
 
         </div>
         <div class="space-y-4">

@@ -21,7 +21,7 @@ class PelatihanList extends Component
     public $category = '';
 
     #[Url()]
-    public $jenisPelaksanaan = [];
+    public $jenisPelaksanaan = '';
 
     #[Url()]
     public $kategori = [];
@@ -30,7 +30,7 @@ class PelatihanList extends Component
     public function pelatihan()
     {
         return Pelatihan::with('kategori')
-            ->when(sizeof($this->jenisPelaksanaan) > 0, function ($query) {
+            ->when(strlen($this->jenisPelaksanaan) > 0, function ($query) {
                 $query->where('jenis_pelaksanaan', $this->jenisPelaksanaan);
             })
             ->when(sizeof($this->kategori) > 0, function ($query) {
