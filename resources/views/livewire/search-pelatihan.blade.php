@@ -1,7 +1,7 @@
 <div>
-    <div class="search flex rounded-2xl bg-white">
+    <div wire:model.live.debounce.250ms="search" class="search flex rounded-2xl bg-white w-full">
         <input type="search" name="search" id="search" placeholder="Search Courses"
-            class="w-full px-4 py-1 text-gray-900 border-none rounded-2xl" wire:model.live="search">
+            class="w-full px-4 text-gray-900 border-none rounded-2xl">
     </div>
     @if (sizeof($pelatihan) > 0)
         <div id="dropdownHover" class="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">

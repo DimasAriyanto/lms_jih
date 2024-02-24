@@ -31,3 +31,11 @@ Route::prefix('/pelatihan')->name('pelatihan.')->group(function () {
 });
 
 Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('pendaftaran.store')->middleware('auth');
+
+Route::get('/tentang-kami', function () {
+    return view('tentang-kami');
+})->name('tentang.kami');
+
+Route::get('/kontak', function () {
+    return view('kontak');
+})->name('kontak');

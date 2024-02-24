@@ -16,7 +16,7 @@ class HomeController extends Controller
         $jumlah_pendaftar = Pendaftaran::count();
         $jumlah_mentor = User::where('role', 'mentor')->count();
 
-        $pelatihan = Pelatihan::latest()->limit(3)->get();
+        $pelatihan = Pelatihan::latest()->limit(7)->get();
         $data_pelatihan = $pelatihan->map(function ($item) {
             return [
                 'id' => $item->id,

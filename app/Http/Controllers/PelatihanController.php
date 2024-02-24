@@ -30,6 +30,6 @@ class PelatihanController extends Controller
 
     public function show(Pelatihan $pelatihan)
     {
-        //
+        return view('detail-pelatihan', compact('pelatihan'));
     }
 }
