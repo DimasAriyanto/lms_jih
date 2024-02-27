@@ -194,6 +194,18 @@ ul li a:hover {
         width: 80%;
     }
 }
+@media (min-width: 370px) {
+    #dropdownHover,
+    .src ul {
+        width: 83%;
+    }
+}
+@media (min-width: 425px) {
+    #dropdownHover,
+    .src ul {
+        width: 85%;
+    }
+}
 @media (min-width: 1024px) {
     #dropdownHover,
     .src ul {
