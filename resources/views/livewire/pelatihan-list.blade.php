@@ -3,7 +3,7 @@
         <div class="space-y-4">
             <h1 class="text-2xl font-semibold">Kelas</h1>
             <div class="flex items-center">
-                <form action="#" class="">
+                <form action="#">
                     <p class="flex">
                         <input wire:model.live.debounce.250ms="jenisPelaksanaan" type="radio" value="terbatas" id="test1" name="radio-group">
                         <label for="test1" class="pt-1 text-md font-semibold text-black">Karyawan</label>
@@ -33,7 +33,22 @@
         </div>
         <div class="space-y-4">
             <h1 class="text-2xl font-semibold">Category</h1>
+            <form action="#" class="space-y-4">
+                <p class="flex">
+                    <input  type="radio" value="terbatas" id="test3" name="radio-group">
+                    <label for="test3" class="pt-1 text-md font-semibold text-black">All</label>
+                </p>
+                <p class="">
+                    <input type="radio" value="umum" id="test4" name="radio-group">
+                    <label for="test4" class="pt-1 text-md font-semibold text-black">course1</label>
+                </p>
+                <p class="flex">
+                    <input type="radio" value="umum" id="test5" name="radio-group">
+                    <label for="test5" class="pt-1 text-md font-semibold text-black">course 2</label>
+                </p>
+            </form>
             @foreach ($catagories as $category)
+
                 <div class="flex items-center mb-4">
                     <input wire:model.live.debounce.250ms="kategori" value="{{ $category['id'] }}" id="default-checkbox"
                         type="checkbox"
@@ -55,6 +70,7 @@
             </div>
         </div>
         <!-- search end -->
+
         <div class="grid gap-4 md:grid-cols-2">
             @foreach ($this->pelatihan as $pelatihan)
                 <div wire:key="{{ $pelatihan['id'] }} class="card">

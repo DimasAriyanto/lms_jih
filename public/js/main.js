@@ -70,3 +70,25 @@ document.addEventListener("DOMContentLoaded", function () {
         updateSlidePosition();
     });
 });
+
+// checkbox
+    document.addEventListener('DOMContentLoaded', function () {
+        var allRadioButton = document.getElementById('test3');
+        var courseRadioButtons = document.querySelectorAll('input[type="radio"][value="All"]');
+
+        allRadioButton.addEventListener('change', function () {
+            if (this.checked) {
+                courseRadioButtons.forEach(function (radioButton) {
+                    radioButton.checked = false;
+                });
+            }
+        });
+
+        courseRadioButtons.forEach(function (radioButton) {
+            radioButton.addEventListener('change', function () {
+                if (this.checked) {
+                    allRadioButton.checked = false;
+                }
+            });
+        });
+    });
