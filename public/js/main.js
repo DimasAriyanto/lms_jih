@@ -72,23 +72,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // checkbox
-    document.addEventListener('DOMContentLoaded', function () {
-        var allRadioButton = document.getElementById('test3');
-        var courseRadioButtons = document.querySelectorAll('input[type="radio"][value="All"]');
+document.addEventListener("DOMContentLoaded", function () {
+    var allRadioButton = document.getElementById("test3");
+    var courseRadioButtons = document.querySelectorAll(
+        'input[type="radio"][value="umum"]'
+    );
 
-        allRadioButton.addEventListener('change', function () {
-            if (this.checked) {
-                courseRadioButtons.forEach(function (radioButton) {
-                    radioButton.checked = false;
-                });
-            }
-        });
+    allRadioButton.addEventListener("change", function () {
+        // Tidak perlu aksi apapun saat tombol "All" diperiksa
+    });
 
-        courseRadioButtons.forEach(function (radioButton) {
-            radioButton.addEventListener('change', function () {
-                if (this.checked) {
-                    allRadioButton.checked = false;
-                }
-            });
+    courseRadioButtons.forEach(function (radioButton) {
+        radioButton.addEventListener("change", function () {
+            // Biarkan tombol "course" diperiksa tanpa mempengaruhi opsi lainnya
         });
     });
+});
