@@ -186,6 +186,28 @@ ul li a:hover {
         font-size: 1.5rem;
     }
 }
+
+/* search */
+@media (min-width: 320px) {
+    #dropdownHover,
+    .src ul {
+        width: 80%;
+    }
+}
+@media (min-width: 1024px) {
+    #dropdownHover,
+    .src ul {
+        width: 24rem;
+    }
+}
+@media (min-width: 700px) {
+    #dropdownHover,
+    .src ul {
+        width: 24rem;
+    }
+}
+
+/* search end */
 @media (min-width: 370px) {
     .user,
     h1 {

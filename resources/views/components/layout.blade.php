@@ -24,8 +24,17 @@
         {{$slot}}
 
         <x-footer/>
+
+    {{-- JS vanila --}}
     <script src="{{asset('js/main.js')}}"></script>
+
+    {{-- tailwind css --}}
     <script src="https://cdn.tailwindcss.com"></script>
+
+
+      <!-- tiny-slider -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
+
 </body>
 
 </html>

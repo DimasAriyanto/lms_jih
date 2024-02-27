@@ -166,8 +166,8 @@
             prevButton: '#prev',
             nextButton: '#next',
             autoplayButtonOutput: false,
-            autoplayTimeout: 4500,
-            speed: 3500,
+            autoplayTimeout: 5000,
+            speed: 5000,
             responsive: {
                 320: {
                     edgePadding: 15,

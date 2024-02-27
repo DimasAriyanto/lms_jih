@@ -17,7 +17,6 @@ class SearchPelatihan extends Component
         if (strlen($this->search) >= 1) {
             $results = Pelatihan::where('nama', 'like', '%' . $this->search . '%')->limit(5)->get();
         }
-
         return view('livewire.search-pelatihan', [
             'pelatihan' => $results,
         ]);

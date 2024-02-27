@@ -47,11 +47,11 @@
     <!-- section end -->
 
     <!-- search start -->
-    <div class="lg:w-8/12 max-lg:mt-8 lg:mt-4 space-y-3">
+    <div class="lg:w-8/12 max-lg:mt-8 lg:mt-4 space-y-5">
         <div class="flex justify-end w-full">
             <div wire:model.live.debounce.250ms="search" class="search flex rounded-2xl bg-white w-full">
                 <input type=" search" name="search" id="search" placeholder="Search Courses..."
-                    class="w-full border-none px-4 text-gray-900 outline-none rounded-2xl">
+                    class="w-full border-none px-4 py-3 text-gray-900 outline-none rounded-2xl">
             </div>
         </div>
         <!-- search end -->
