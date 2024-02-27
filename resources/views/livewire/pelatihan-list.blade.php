@@ -5,11 +5,13 @@
             <div class="flex items-center">
                 <form action="#">
                     <p class="flex">
-                        <input wire:model.live.debounce.250ms="jenisPelaksanaan" type="radio" value="terbatas" id="test1" name="radio-group">
+                        <input wire:model.live.debounce.250ms="jenisPelaksanaan" type="radio" value="terbatas"
+                            id="test1" name="radio-group">
                         <label for="test1" class="pt-1 text-md font-semibold text-black">Karyawan</label>
                     </p>
                     <p class="pt-4">
-                        <input wire:model.live.debounce.250ms="jenisPelaksanaan" type="radio" value="umum" id="test2" name="radio-group">
+                        <input wire:model.live.debounce.250ms="jenisPelaksanaan" type="radio" value="umum"
+                            id="test2" name="radio-group">
                         <label for="test2" class="pt-1 text-md font-semibold text-black">Umum</label>
                     </p>
                 </form>
@@ -73,7 +75,8 @@
         <div class="grid gap-4 md:grid-cols-2">
             @foreach ($this->pelatihan as $pelatihan)
                 <div wire:key="{{ $pelatihan['id'] }} class="card">
-                    <img src="{{ $pelatihan->getThumbnailUrl() }}" alt="" class="rounded-t-2xl w-full">
+                    <img src="{{ $pelatihan->getThumbnailUrl() }}" alt="{{ $pelatihan['nama'] }}"
+                        class="rounded-t-2xl w-full">
                     <div class="card-body px-3 py-5 w-full bg-white">
                         <div class="flex">
                             <h2 class="card-title self-start">{{ $pelatihan['nama'] }}</h2>
@@ -90,13 +93,14 @@
                         <h4 class="text-sm text-slate-400 pt-2">Rp {{ $pelatihan['harga'] }}</h4>
                         <div class="flex">
                             <img src="{{ asset('images/clock.svg') }}" alt="clock" class="w-4 pt-3">
-                            <h2 class="pt-3 px-2 text-xs font-medium">{{ $pelatihan['tanggal_pelaksanaan'] }}
-                                ({{ $pelatihan['jam_mulai'] }} - {{ $pelatihan['jam_selesai'] }} WIB)
+                            <h2 class="pt-3 px-2 text-xs font-medium">{{ $pelatihan->getTanggalPendaftaran() }}
+                                ({{ $pelatihan->getTanggalMulai() }} - {{ $pelatihan->getTanggalSelesai() }} WIB)
                             </h2>
                         </div>
                         <div class="flex">
                             <img src="{{ asset('images/location.svg') }}" alt="clock" class="w-4 pt-3">
-                            <h2 class="pt-4 px-2 text-xs">{{ $pelatihan['tempat_pelaksanaan'] }}</h2>
+                            <h2 class="pt-4 px-2 text-xs">
+                                {{ $pelatihan['tempat_pelaksanaan'] ?? $pelatihan['link_online'] }}</h2>
                         </div>
                     </div>
                 </div>

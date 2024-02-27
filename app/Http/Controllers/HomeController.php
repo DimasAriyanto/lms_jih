@@ -16,23 +16,7 @@ class HomeController extends Controller
         $jumlah_pendaftar = Pendaftaran::count();
         $jumlah_mentor = User::where('role', 'mentor')->count();
 
-        $pelatihan = Pelatihan::latest()->limit(7)->get();
-        $data_pelatihan = $pelatihan->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'nama' => $item->nama,
-                'image_url' => Storage::url($item->image_url),
-                'status_pendaftaran' => $item->status_pendaftaran,
-                'tempat_pelaksanaan' => $item->tempat_pelaksanaan ?? $item->link_online,
-                'tanggal_pelaksanaan' => $item->tanggal_pelaksanaan,
-                'jam_mulai' => $item->jam_mulai,
-                'jam_selesai' => $item->jam_selesai,
-                'harga' => $item->harga,
-            ];
-        });
-
-        // dd($data_pelatihan);
-
+        $data_pelatihan = Pelatihan::latest()->limit(7)->get();
 
         return view('home', compact('jumlah_pelatihan', 'jumlah_pendaftar', 'jumlah_mentor', 'data_pelatihan'));
     }

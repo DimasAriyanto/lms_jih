@@ -83,4 +83,18 @@ class Pelatihan extends Model
 
         return ($isUrl) ? $this->image_url : Storage::disk('public')->url($this->image_url);
     }
+
+    public function getTanggalPendaftaran() {
+        return \Carbon\Carbon::parse($this->tanggal_pelaksanaan)->locale('id')->isoFormat('dddd, D MMMM YYYY');
+    }
+
+    public function getTanggalMulai()
+    {
+        return \Carbon\Carbon::parse($this->jam_mulai)->format('H:i');
+    }
+
+    public function getTanggalSelesai()
+    {
+        return \Carbon\Carbon::parse($this->jam_selesai)->format('H:i');
+    }
 }
