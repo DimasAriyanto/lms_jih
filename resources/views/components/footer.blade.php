@@ -98,27 +98,13 @@
                                 Category Courses
                             </h5>
                             <ul class="list-none mt-6 text-black">
-                                <li>
-                                    <a href="#"
-                                        class="hover:text-[#116e63] transition-all duration-100 ease-in-out">
-                                        Pelatihan Apoteker</a>
-                                </li>
-                                <li class="mt-[10px]">
-                                    <a href="#"
-                                        class="hover:text-[#116e63] transition-all duration-100 ease-in-out">
-                                        Pelatihan Dasar Persalinan</a>
-                                </li>
-                                <li class="mt-[10px]">
-                                    <a href="#"
-                                        class="hover:text-[#116e63] transition-all duration-100 ease-in-out">
-                                        Pelatihan Dasar Kesehatan Anak</a>
-                                </li>
-                                <li class="mt-[10px]">
-                                    <a href="#"
-                                        class="hover:text-[#116e63] transition-all duration-100 ease-in-out">
-                                        Pelatihan Kepada Ibu
-                                        Lansia</a>
-                                </li>
+                                @foreach ($categories as $category)
+                                    <li>
+                                        <a href="{{ route('pelatihan.index') . '?kategori[0]=' . $category['id'] }}"
+                                            class="hover:text-[#116e63] transition-all duration-100 ease-in-out">
+                                            {{ $category['nama'] }}</a>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                         <!--end col-->
