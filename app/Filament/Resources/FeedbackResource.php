@@ -40,9 +40,11 @@ class FeedbackResource extends Resource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('user.name')
+                    ->label('Nama pengirim')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label('Tanggal dikirim')
                     ->dateTime()
                     ->sortable()
             ])
@@ -75,5 +77,10 @@ class FeedbackResource extends Resource
             'create' => Pages\CreateFeedback::route('/create'),
             'edit' => Pages\EditFeedback::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
     }
 }

@@ -31,7 +31,7 @@ class PelatihanList extends Component
     {
         return Pelatihan::with('kategori')
             ->when(strlen($this->jenisPelaksanaan) > 0, function ($query) {
-                $query->where('jenis_pelaksanaan', $this->jenisPelaksanaan);
+                $query->orWhere('jenis_pelaksanaan', $this->jenisPelaksanaan);
             })
             ->when(sizeof($this->kategori) > 0, function ($query) {
                 $query->whereHas('kategori', function ($query) {
