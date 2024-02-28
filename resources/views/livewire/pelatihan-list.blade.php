@@ -37,20 +37,19 @@
             <h1 class="text-2xl font-semibold">Category</h1>
             <form action="#" class="space-y-4">
                 <p class="flex">
-                    <input  type="radio" value="terbatas" id="test3" name="radio-group">
+                    <input type="checkbox" value="terbatas" id="test3" name="checkbox-group">
                     <label for="test3" class="pt-1 text-md font-semibold text-black">All</label>
                 </p>
                 <p class="">
-                    <input type="radio" value="umum" id="test4" name="radio-group">
+                    <input type="checkbox" value="umum" id="test4" name="checkbox-group">
                     <label for="test4" class="pt-1 text-md font-semibold text-black">course1</label>
                 </p>
                 <p class="flex">
-                    <input type="radio" value="umum" id="test5" name="radio-group">
+                    <input type="checkbox" value="umum" id="test5" name="checkbox-group">
                     <label for="test5" class="pt-1 text-md font-semibold text-black">course 2</label>
                 </p>
             </form>
-            @foreach ($catagories as $category)
-
+            {{-- @foreach ($catagories as $category)
                 <div class="flex items-center mb-4">
                     <input wire:model.live.debounce.250ms="kategori" value="{{ $category['id'] }}" id="default-checkbox"
                         type="checkbox"
@@ -58,7 +57,7 @@
                     <label for="default-checkbox"
                         class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $category['nama'] }}</label>
                 </div>
-            @endforeach
+            @endforeach --}}
         </div>
     </div>
     <!-- section end -->
