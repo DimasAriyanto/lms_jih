@@ -174,4 +174,22 @@ class PendaftaranResource extends Resource
             'edit' => Pages\EditPendaftaran::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        if (auth()->user()->role !== 'admin') {
+            return parent::getEloquentQuery()->where('user_id', auth()->id())->count();
+        }
+
+        return static::getModel()::count();
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->role !== 'admin') {
+            return parent::getEloquentQuery()->where('user_id', auth()->id());
+        }
+
+        return parent::getEloquentQuery();
+    }
 }

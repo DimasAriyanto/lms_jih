@@ -37,14 +37,14 @@
                     @guest
                         <div class="flex self-end gap-4 mx-8 masuk">
                             <li>
-                                <a href="{{ route('filament.app.auth.login') }}">
+                                <a href="{{ route('filament.admin.auth.login') }}">
                                     <button
                                         class="btn rounded-2xl px-6 py-2 text-white
                                     ">Masuk</button>
                                 </a>
                             </li>
                             <li class="daftar">
-                                <a href="{{ route('filament.app.auth.register') }}">
+                                <a href="{{ route('filament.admin.auth.register') }}">
                                     <button class="btn rounded-2xl px-6 py-2 text-white bg-[#116e63]">Daftar</button>
                                 </a>
                             </li>
@@ -66,15 +66,9 @@
                             <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                 role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button"
                                 tabindex="-1">
-                                @if (auth()->user()->role === 'admin')
-                                    <a href="{{ route('filament.admin.pages.dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                                        id="user-menu-item-0">Dashboard</a>
-                                @else
-                                    <a href="{{ route('filament.app.pages.dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                                        id="user-menu-item-0">Dashboard</a>
-                                @endif
+                                <a href="{{ route('filament.admin.pages.dashboard') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                                    id="user-menu-item-0">Dashboard</a>
                                 <form action="{{ route('filament.app.auth.logout') }}" method="post">
                                     @csrf
                                     <button type="submit" class="block px-4 py-2 text-sm text-gray-700" role="menuitem"

@@ -16,6 +16,9 @@ class PendaftaranRelationManager extends RelationManager
 {
     protected static string $relationship = 'pendaftaran';
 
+    protected static bool $shouldSkipAuthorization = true;
+
+
     public function form(Form $form): Form
     {
         return $form

@@ -319,16 +319,31 @@ class PelatihanResource extends Resource
 
     public static function getPages(): array
     {
-        return [
-            'index' => Pages\ListPelatihans::route('/'),
-            'create' => Pages\CreatePelatihan::route('/create'),
-            'view' => Pages\ViewPelatihan::route('/{record}'),
-            'edit' => Pages\EditPelatihan::route('/{record}/edit'),
-        ];
+        // if (auth()->user()->role === 'admin') {
+            return [
+                'index' => Pages\ListPelatihans::route('/'),
+                'create' => Pages\CreatePelatihan::route('/create'),
+                'view' => Pages\ViewPelatihan::route('/{record}'),
+                'edit' => Pages\EditPelatihan::route('/{record}/edit'),
+            ];
+        // }
     }
 
     public static function getNavigationBadge(): ?string
     {
+        if (auth()->user()->role !== 'admin') {
+            return parent::getEloquentQuery()->where('user_id', auth()->id())->count();
+        }
+
         return static::getModel()::count();
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        if (auth()->user()->role !== 'admin') {
+            return parent::getEloquentQuery()->where('user_id', auth()->id());
+        }
+
+        return parent::getEloquentQuery();
     }
 }

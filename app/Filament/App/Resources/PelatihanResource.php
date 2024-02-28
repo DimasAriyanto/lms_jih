@@ -228,7 +228,6 @@ class PelatihanResource extends Resource
                 TextColumn::make('tempat_pelaksanaan')
                     ->toggleable(),
                 TextColumn::make('tanggal_pelaksanaan')
-                    ->dateTime()
                     ->toggleable(),
                 TextColumn::make('jam_mulai')
                     ->toggleable(),
@@ -293,9 +292,9 @@ class PelatihanResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 // ActionGroup::make([
-                    // ViewAction::make(),
-                    // EditAction::make(),
-                    // DeleteAction::make(),
+                // ViewAction::make(),
+                // EditAction::make(),
+                // DeleteAction::make(),
                 // ])->tooltip('Actions')
             ])
             ->bulkActions([
@@ -329,6 +328,10 @@ class PelatihanResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('user_id', auth()->id());
+        if (auth()->user()->role !== 'admin') {
+            return parent::getEloquentQuery()->where('user_id', auth()->id());
+        }
+
+        return parent::getEloquentQuery();
     }
 }

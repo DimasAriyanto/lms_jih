@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,13 +14,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable implements HasMedia, FilamentUser, MustVerifyEmail
+class User extends Authenticatable implements HasMedia, FilamentUser, MustVerifyEmail, HasAvatar
 {
     use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia, SoftDeletes;
 
@@ -95,5 +97,16 @@ class User extends Authenticatable implements HasMedia, FilamentUser, MustVerify
             ->addMediaConversion('preview')
             ->fit(Manipulations::FIT_CROP, 300, 300)
             ->nonQueued();
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        if ($this->image_url === null) {
+            return asset('images/default-profile.jpg');
+        }
+
+        $isUrl = str_contains($this->image_url, 'http');
+
+        return ($isUrl) ? $this->image_url : Storage::disk('public')->url($this->image_url);
     }
 }

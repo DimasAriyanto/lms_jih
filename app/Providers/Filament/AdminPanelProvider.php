@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\Auth\Register;
 use App\Http\Middleware\AdminRole;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -34,6 +35,9 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->login()
+            ->registration(Register::class)
+            ->passwordReset()
+            ->emailVerification()
             ->profile(EditProfile::class)
             ->userMenuItems([
                 MenuItem::make()
@@ -64,7 +68,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-                AdminRole::class,
             ])
             ->sidebarCollapsibleOnDesktop();
     }
