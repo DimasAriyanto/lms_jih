@@ -41,6 +41,7 @@ class PelatihanList extends Component
             ->where('nama', 'like', '%' . $this->search . '%')
             ->paginate(10);
     }
+
     public function render()
     {
         return view('livewire.pelatihan-list', [

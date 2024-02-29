@@ -25,7 +25,7 @@ class KategoriResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-queue-list';
 
-    protected static ?string $navigationGroup = 'Management Pelatihan';
+    protected static ?string $navigationGroup = 'Pelatihan';
 
     protected static ?string $recordTitleAttribute = 'nama';
 

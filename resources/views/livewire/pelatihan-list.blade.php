@@ -40,14 +40,14 @@
                     <input type="checkbox" value="terbatas" id="test3" name="checkbox-group">
                     <label for="test3" class="pt-1 text-md font-semibold text-black">All</label>
                 </p>
-                <p class="">
-                    <input type="checkbox" value="umum" id="test4" name="checkbox-group">
-                    <label for="test4" class="pt-1 text-md font-semibold text-black">course1</label>
-                </p>
-                <p class="flex">
-                    <input type="checkbox" value="umum" id="test5" name="checkbox-group">
-                    <label for="test5" class="pt-1 text-md font-semibold text-black">course 2</label>
-                </p>
+                @foreach ($catagories as $category)
+                    <p class="flex">
+                        <input wire:model.live.debounce.250ms="kategori" type="checkbox" value="{{ $category['id'] }}"
+                            id="test4" name="checkbox-group">
+                        <label for="test4"
+                            class="pt-1 text-md font-semibold text-black">{{ $category['nama'] }}</label>
+                    </p>
+                @endforeach
             </form>
             {{-- @foreach ($catagories as $category)
                 <div class="flex items-center mb-4">

@@ -2,24 +2,24 @@
 
 namespace App\Policies;
 
-use App\Models\Sertifikat;
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class SertifikatPolicy
+class CartPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->role === 'admin';
+        return $user->role === 'umum' || $user->role === 'pegawai';
     }
 
     // /**
     //  * Determine whether the user can view the model.
     //  */
-    // public function view(User $user, Sertifikat $sertifikat): bool
+    // public function view(User $user, Cart $cart): bool
     // {
     //     //
     // }
@@ -35,7 +35,7 @@ class SertifikatPolicy
     // /**
     //  * Determine whether the user can update the model.
     //  */
-    // public function update(User $user, Sertifikat $sertifikat): bool
+    // public function update(User $user, Cart $cart): bool
     // {
     //     //
     // }
@@ -43,7 +43,7 @@ class SertifikatPolicy
     // /**
     //  * Determine whether the user can delete the model.
     //  */
-    // public function delete(User $user, Sertifikat $sertifikat): bool
+    // public function delete(User $user, Cart $cart): bool
     // {
     //     //
     // }
@@ -51,7 +51,7 @@ class SertifikatPolicy
     // /**
     //  * Determine whether the user can restore the model.
     //  */
-    // public function restore(User $user, Sertifikat $sertifikat): bool
+    // public function restore(User $user, Cart $cart): bool
     // {
     //     //
     // }
@@ -59,7 +59,7 @@ class SertifikatPolicy
     // /**
     //  * Determine whether the user can permanently delete the model.
     //  */
-    // public function forceDelete(User $user, Sertifikat $sertifikat): bool
+    // public function forceDelete(User $user, Cart $cart): bool
     // {
     //     //
     // }

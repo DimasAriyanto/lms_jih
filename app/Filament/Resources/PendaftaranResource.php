@@ -35,7 +35,7 @@ class PendaftaranResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-pencil';
 
-    protected static ?string $navigationGroup = 'Management Pelatihan';
+    protected static ?string $navigationGroup = 'Pelatihan';
 
     public static function form(Form $form): Form
     {
@@ -182,6 +182,11 @@ class PendaftaranResource extends Resource
         }
 
         return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'Jumlah pelatihan diikuti';
     }
 
     public static function getEloquentQuery(): Builder
